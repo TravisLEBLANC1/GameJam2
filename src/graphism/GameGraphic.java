@@ -18,7 +18,7 @@ public class GameGraphic extends JComponent {
 	    var walls = game.map.getWalls();
 	    for (var wall : walls) {
 	      g.setColor(Color.GRAY);
-	      g.fillRect(wall.x, wall.y, wall.width, wall.height);
+	      g.fillPolygon(wall.getPolygon());
 }
 	}
 
@@ -29,7 +29,10 @@ public class GameGraphic extends JComponent {
 			g.setColor(Color.BLUE);
 		}
 		var pos = game.player.getPos();
-		g.fillOval((int) pos.x(),(int) pos.y(), 50, 50);
+		g.fillOval((int) pos.x()-25,(int) pos.y()-25, 50, 50);
+		g.setColor(Color.BLACK);
+		var rec = game.player.getHitbox();
+		g.drawRect(rec.x, rec.y, rec.width, rec.height);
 	}
 	
     @Override

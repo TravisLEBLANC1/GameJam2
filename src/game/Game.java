@@ -3,7 +3,6 @@ package game;
 import javax.swing.Timer;
 
 import util.Direction;
-import util.Vector;
 
 public class Game {
     public static final int TIC = 1000/60; // nb ms for a tic on the game (each tic is an update of the characters)
@@ -23,9 +22,17 @@ public class Game {
 	private void updateCharacters() {
 		var old = player.getPos();
 		player.move();
-		if (map.isNotValid(player.getHitbox())) {
+		var wall = map.touchWall(player);
+		if (wall != null) {
+			int edge = wall.getCollidingEdge(player);
+			if (edge < 0) {
+				System.out.println("hMmm...");
+				
+			}else {
+				var normal = wall.getEdgeNormal(edge);
+				player.bounce(normal);
+			}
 			player.teleport(old);
-			player.resetSpeed();
 		}
 	}
 }
