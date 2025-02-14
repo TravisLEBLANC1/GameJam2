@@ -6,11 +6,37 @@ import util.Direction;
 import util.Vector;
 
 public class Player {
+	private Direction dir = Direction.NULL;
 	private  Vector pos = new Vector(500,500);
+	private Vector speed = Vector.NULL;
+	private double maxSpeed = 10;
+	private double desceleration = 0.1;
 	
-	public void move(Direction dir) {
-		var v = Vector.VectorFromDirection(dir).times(10);
-		pos = Vector.add(pos, v);
+	public void resetSpeed() {
+		speed = new Vector(0, 0);
+	}
+	
+	public void changeDirection(Direction dir) {
+		this.dir = dir;
+
+	}
+	
+	public void move() {
+		pos = Vector.add(pos, speed);
+		if (dir == Direction.NULL) {
+			if (speed.norme() <= desceleration ) {
+				speed = Vector.NULL;
+			}else {
+			speed = speed.times((speed.norme()-desceleration)/speed.norme()); 
+				}
+		}else {
+			var v = Vector.VectorFromDirection(dir).times(0.5);
+			var newspeed = Vector.add(speed, v);
+			if (newspeed.norme() <= maxSpeed) {
+				speed = newspeed;
+				System.out.println(speed.norme());
+			}
+		}
 	}
 	
 	public Vector getPos() {
