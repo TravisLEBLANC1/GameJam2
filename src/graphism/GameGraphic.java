@@ -23,7 +23,11 @@ public class GameGraphic extends JComponent {
 	}
 
 	public void paintPlayer(Graphics g) {
-		g.setColor(Color.BLUE);
+		if (game.player.isDashing()) {
+			g.setColor(Color.RED);
+		}else {
+			g.setColor(Color.BLUE);
+		}
 		var pos = game.player.getPos();
 		g.fillOval((int) pos.x(),(int) pos.y(), 50, 50);
 	}
