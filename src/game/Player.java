@@ -16,9 +16,10 @@ public class Player {
 	// player variables
 	private Direction dir = Direction.NULL;
 	private Direction lastDir = Direction.NULL;
+	private Direction dashDir = Direction.NULL;
 	private  Vector pos = new Vector(500,500);
 	private Vector speed = Vector.NULL;
-	private double maxSpeed = 8.5;
+	private double maxSpeed = 6.5;
 	private double dashSpeed = maxSpeed *dashSpeedMultiplicator;
 	private long dashBeginTime = 0;
 
@@ -35,20 +36,19 @@ public class Player {
 	}
 	
 	public void changeDirection(Direction dir) {
-		if (canChangeDirection()) {
-			if (this.dir != dir) {
-				this.lastDir = this.dir;
-			}
-			this.dir = dir;
+		if (this.dir != dir) {
+			this.lastDir = this.dir;
 		}
+		this.dir = dir;
 	}
 	
 	public void dash() {
 		if (speed == Vector.NULL) {
-			speed = Vector.VectorFromDirection(lastDir).normalized(dashSpeed);
+			dashDir = lastDir;
 		}else {
-			speed = Vector.VectorFromDirection(dir).normalized(dashSpeed);
+			dashDir = dir;
 		}
+		speed = Vector.VectorFromDirection(dashDir).normalized(dashSpeed);
 		dashBeginTime = System.nanoTime();
 	}
 	
@@ -66,8 +66,9 @@ public class Player {
 		}else {
 			speed = speed.normalized((speed.norme()*friction));
 		}
+		Direction d = getDir();
 
-		var v = Vector.VectorFromDirection(dir).normalized(normDir);
+		var v = Vector.VectorFromDirection(d).normalized(normDir);
 		var newspeed = Vector.add(speed, v);
 		if (newspeed.norme() <= maxSpeed) {
 			speed = newspeed;
@@ -80,6 +81,14 @@ public class Player {
 	
 	public Vector getPos() {
 		return pos;
+	}
+	
+	public Direction getDir() {
+		if (isDashing()) {
+			return dashDir;
+		}else {
+			return dir;
+		}
 	}
 	
 	public void teleport(Vector pos) {
