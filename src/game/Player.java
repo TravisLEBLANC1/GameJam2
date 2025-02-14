@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Rectangle;
+import java.awt.geom.Line2D;
 
 import util.Direction;
 import util.Vector;
@@ -17,6 +18,7 @@ public class Player {
 	private Direction dir = Direction.NULL;
 	private Direction lastDir = Direction.NULL;
 	private Direction dashDir = Direction.NULL;
+	private  Vector prev = new Vector(500,500);
 	private  Vector pos = new Vector(500,500);
 	private Vector speed = Vector.NULL;
 	private double maxSpeed = 6.5;
@@ -56,11 +58,7 @@ public class Player {
 	    return !isDashing();
 	}
 	
-	public void move() {
-	    long currentTime = System.nanoTime();
-	    long elapsedTime = (currentTime - lastMaj)/1000000 ;
-	    lastMaj = currentTime;
-		
+	private void changeSpeed() {
 		if (dir == Direction.NULL && speed.norme() <= EPSILON ) {
 			speed = Vector.NULL;
 		}else {
@@ -75,12 +73,30 @@ public class Player {
 		}else {
 			speed = newspeed.normalized(speed.norme());
 		}
-
+	}
+	
+	public void move() {
+		// speed managment
+		changeSpeed();
+		// actual movement
+	    long currentTime = System.nanoTime();
+	    long elapsedTime = (currentTime - lastMaj)/1000000 ;
+	    lastMaj = currentTime;
+		prev = pos;
 		pos = Vector.add(pos, speed.times(elapsedTime/16));
+	}
+	
+	public void bounce(Vector normal) {
+		speed = Vector.sub(speed, normal.times(2*Vector.scalar(speed, normal)));
+		System.out.println(speed);
 	}
 	
 	public Vector getPos() {
 		return pos;
+	}
+	
+	public Vector getPrevPos() {
+		return prev;
 	}
 	
 	public Direction getDir() {
@@ -91,11 +107,15 @@ public class Player {
 		}
 	}
 	
+	public Line2D getMovementLine() {
+		return new Line2D.Double(prev.x(), prev.y(), pos.x(), pos.y());
+	}
+	
 	public void teleport(Vector pos) {
 		this.pos = pos;
 	}
 	
 	public Rectangle getHitbox() {
-		return new Rectangle((int) pos.x(), (int) pos.y(), 50, 50);
+		return new Rectangle((int) pos.x()-25, (int) pos.y()-25, 50, 50);
 	}
 }

@@ -55,6 +55,14 @@ public record Vector(double x, double y) {
     return new Vector((x/n)*norm, (y/n)*norm);
   }
   
+  public Vector perpendicular() {
+	  if (x == 0) {
+		  return new Vector(-y, x);
+	  }else {
+		  return new Vector(y, -x);
+	  }
+  }
+  
   public Vector normalized() {
 	    var n = norme();
 	    if(Math.abs(x) < EPSILON && Math.abs(y) < EPSILON)
@@ -75,6 +83,10 @@ public record Vector(double x, double y) {
     return new Vector(v1.x() - v2.x(), v1.y() - v2.y());
   }
   
+  
+  public static double scalar(Vector v1, Vector v2) {
+	  return v1.x*v2.x + v1.y*v2.y;
+  }
   
   public Vector times(double lambda) {
     return new Vector(lambda*x, lambda*y);
