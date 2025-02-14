@@ -11,6 +11,7 @@ public class Player {
 	private Vector speed = Vector.NULL;
 	private double maxSpeed = 10;
 	private double desceleration = 0.1;
+	private long lastMaj = 0;
 	
 	public void resetSpeed() {
 		speed = new Vector(0, 0);
@@ -22,7 +23,10 @@ public class Player {
 	}
 	
 	public void move() {
-		pos = Vector.add(pos, speed);
+	    long currentTime = System.nanoTime();
+	    long elapsedTime = (currentTime - lastMaj)/1000000 ;
+	    lastMaj = currentTime;
+		pos = Vector.add(pos, speed.times(elapsedTime/8));
 		if (dir == Direction.NULL) {
 			if (speed.norme() <= desceleration ) {
 				speed = Vector.NULL;
@@ -30,7 +34,7 @@ public class Player {
 			speed = speed.times((speed.norme()-desceleration)/speed.norme()); 
 				}
 		}else {
-			var v = Vector.VectorFromDirection(dir).times(0.5);
+			var v = Vector.VectorFromDirection(dir).normalized(0.5);
 			var newspeed = Vector.add(speed, v);
 			if (newspeed.norme() <= maxSpeed) {
 				speed = newspeed;
