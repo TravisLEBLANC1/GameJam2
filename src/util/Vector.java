@@ -43,17 +43,29 @@ public record Vector(double x, double y) {
     return Math.sqrt(x*x + y*y);
   }
   
-  public Vector normalized() {
+  public Vector normalized(double norm) {
     var n = norme();
     if(Math.abs(x) < EPSILON && Math.abs(y) < EPSILON)
       return NULL;
     if(Math.abs(x) < EPSILON)
-      return new Vector(0, y/n);
+      return new Vector(0, (y/n)*norm);
     if(Math.abs(y) < EPSILON)
-      return new Vector(x/n, 0);
+      return new Vector((x/n)*norm, 0);
     
-    return new Vector(x/n, y/n);
+    return new Vector((x/n)*norm, (y/n)*norm);
   }
+  
+  public Vector normalized() {
+	    var n = norme();
+	    if(Math.abs(x) < EPSILON && Math.abs(y) < EPSILON)
+	      return NULL;
+	    if(Math.abs(x) < EPSILON)
+	      return new Vector(0, y/n);
+	    if(Math.abs(y) < EPSILON)
+	      return new Vector(x/n, 0);
+	    
+	    return new Vector(x/n, y/n);
+	  }
   
   public static Vector add(Vector v1, Vector v2) {
     return new Vector(v1.x() + v2.x(), v1.y() + v2.y());
