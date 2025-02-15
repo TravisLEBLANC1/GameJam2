@@ -16,14 +16,16 @@ public class MainGraphic extends JFrame{
 	private Timer updateTimer = new Timer(1000/FPS, e -> draw());
 	private GameGraphic gameGraphic;
 	private boolean running = true;
-	private int x;
+	public static int WINWIDTH = 1080;
+	public static int WINHEIGHT = 900;
 	
 	private Game game;
 	  public MainGraphic() {
 	    super(APPNAME);
 	    getContentPane().setBackground(BACKGROUNDCOLOR); // set background color
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Close when "X" is clicked
-	    setSize(1080, 900);  // Set window size
+	    setResizable(false);
+	    setSize(WINWIDTH, WINHEIGHT);  // Set window size
 	    setVisible(true);
 	  }
 	  

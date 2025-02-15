@@ -76,16 +76,17 @@ public class Wall {
             		  closestPoint = point;
             		  minDistance = point.distance(playerPoint);
             		  resultEdge = i;
-            		  break;
             	  }else {
             		  double distance = point.distance(playerPoint);
             		  
-            		  if (Math.abs(distance - minDistance) < EPSILON) {
-            			  System.out.println("btw " + resultEdge + "  " + i  + " " + Math.abs(distance - minDistance));
+            		  if (i != resultEdge && Math.abs(distance - minDistance) < EPSILON) {
+            			  // System.out.println("btw " + resultEdge + "  " + i  + " " + Math.abs(distance - minDistance));
             			  resultEdge = CORNER;
             		  }else if (distance < minDistance) {
+            			  // System.out.println(distance + " < " + minDistance + " so "+ polygon.xpoints[i] + " and " + polygon.ypoints[i]);
 	                      minDistance = distance;
 	                      resultEdge = i;
+	                      
 		              }
             		  
             	  }
@@ -129,10 +130,10 @@ public class Wall {
       int y2 = ypoints.get((edgeIndex+1) %nbpoints);
 
       Vector edge = new Vector(x2 - x1, y2 - y1);
-
+      System.out.println("edge=" + edge);
       // Compute normal (perpendicular vector)
       Vector normal = edge.perpendicular();
-
+      System.out.println("normal=" + normal);
       return normal.normalized();
   }
   

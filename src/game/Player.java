@@ -17,7 +17,7 @@ public class Player {
 	
 	private final double EPSILON = 1; // if it's lower then it's 0
 	private final double friction = 0.98;
-	private final double dashSpeedMultiplicator = 2;
+	private final double dashSpeedMultiplicator = 2.5;
 	private final double hitboxShift = 12;
 	
 	public static final int WIDTH = 50;
@@ -29,7 +29,7 @@ public class Player {
 	private  Vector translocatorPos = null;
 	private  Vector pos = new Vector(550,500);
 	private Vector speed = Vector.NULL;
-	private double maxSpeed = 9;
+	private double maxSpeed = 8;
 	private double dashSpeed = maxSpeed *dashSpeedMultiplicator;
 	private long dashBeginTime = 0;
 	private long transloBeginTime = 0;
@@ -134,7 +134,9 @@ public class Player {
 	}
 	
 	public void bounce(Vector normal) {
+		// System.out.println("scalar = " + normal.times(2*Vector.scalar(speed, normal)));
 		speed = Vector.sub(speed, normal.times(2*Vector.scalar(speed, normal)));
+		// System.out.println("speed = " +speed);
 	}
 	
 	public void bounceOpposite() {

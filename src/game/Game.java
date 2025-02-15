@@ -25,6 +25,7 @@ public class Game {
 		player.move();
 		var wall = map.touchWall(player);
 		if (wall != null) {
+			
 			int edge = wall.getCollidingEdge(player);
 			if (edge == Wall.NOTFOUND) {
 				// should not happen
