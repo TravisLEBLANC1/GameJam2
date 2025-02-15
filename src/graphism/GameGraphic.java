@@ -41,8 +41,13 @@ public class GameGraphic extends JComponent {
 
 	public void paintButtons(Graphics g) {
 	    var buttons = game.map.getButtons();
-	    for (var button : buttons) {
-	      g.setColor(Color.BLACK);
+	    for (var b : buttons) {
+	    	var button = b.getRect();
+	      if (b.getState() != 0) {
+	    	  g.setColor(Color.GREEN);
+	      }else {
+	    	  g.setColor(Color.BLACK);
+	      }
 	      g.fillRect((int)(button.x-upperLeft.x()), (int)(button.y-upperLeft.y()), button.width, button.height);
 	    }
 	}

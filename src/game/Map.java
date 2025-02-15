@@ -8,7 +8,11 @@ import java.util.List;
 
 public class Map {
 	private ArrayList<Wall> walls = new ArrayList<>();
+<<<<<<< Updated upstream
   private ArrayList<Rectangle> buttons = new ArrayList<>();
+=======
+	private ArrayList<ObjectInteract> buttons = new ArrayList<>();
+>>>>>>> Stashed changes
   
 	public Map() {
 		// TODO temporary
@@ -19,12 +23,15 @@ public class Map {
 		int[] xpoints = {200, 500, 480, 180};
 		int[] ypoints = {200, 500, 520, 220};
 		walls.add(new Wall(xpoints, ypoints, 4));
+<<<<<<< Updated upstream
+=======
+
+		buttons.add(new ObjectInteract(EventEnum.FISH, new Rectangle (300,400,50,50)));
+
+>>>>>>> Stashed changes
 		xpoints = new int[]{1500, 1800, 1780, 1480};
 		ypoints = new int[]{200, 500, 520, 220};
 		walls.add(new Wall(xpoints, ypoints, 4));
-		buttons.add(new Rectangle (300,400,50,50));
-		
-		buttons.add(new Rectangle (300,400,50,50));
 		
 		walls.add(new Wall(new Rectangle(900,200, 40, 400)));
 		walls.add(new Wall(new Rectangle(2000,200, 40, 400)));
@@ -35,6 +42,28 @@ public class Map {
 
 //		walls.add(new Wall(new Rectangle(50,50, 20, 700)));
 //		walls.add(new Wall(new Rectangle(50,50, 20, 700)));
+	}
+	
+	private boolean basicCheck(EventEnum event) {
+		return buttons.stream().filter(b -> b.type == event).allMatch(b -> b.isValid());
+	}
+	
+	/*
+	 * return true if the event is validated
+	 * false otherwise (and we loose?)
+	 */
+	public boolean event(EventEnum event) {
+		return switch(event) {
+		case NOEV -> true;
+		case FISH -> basicCheck(event);
+		case MOUSE -> basicCheck(event);
+		case TASSE -> basicCheck(event);
+		default -> {
+			System.out.println("event " + event + " inconnu");
+			yield false;
+			}
+		};
+		
 	}
 	
 	public List<Wall> getWalls(){
@@ -49,14 +78,19 @@ public class Map {
 			}
 		}
 		return null;
-//		return walls.stream().anyMatch(w -> w.intersects(hitbox));
 	}
 	
-	public List<Rectangle> getButtons(){
+	public List<ObjectInteract> getButtons(){
 		return buttons;
 	}
 	
-	public boolean isPresed(Polygon hitbox) {
-		return buttons.stream().anyMatch(w -> hitbox.intersects(w));
+	private void clickButton(ObjectInteract button, Polygon hitbox) {
+		if (button.intersects(hitbox)) {
+			button.nextState();
+		}
+	}
+	
+	public void clickButton (Polygon hitbox) {
+		buttons.stream().forEach(b -> clickButton(b, hitbox));
 	}
 }
