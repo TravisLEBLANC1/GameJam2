@@ -76,7 +76,7 @@ public class Player {
 		this.dir = dir;
 	}
 	
-	public void dash() {
+	public boolean dash() {
 		if (canDash()) {
 			if (speed == Vector.NULL) {
 				dashDir = lastDir;
@@ -85,7 +85,9 @@ public class Player {
 			}
 			speed = Vector.VectorFromDirection(dashDir).normalized(dashSpeed);
 			dashBeginTime = System.nanoTime();
+			return true;
 		}
+		return false;
 	}
 	
 	public boolean translocator() {

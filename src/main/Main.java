@@ -7,6 +7,7 @@ import graphism.MainGraphic;
 public class Main {
 
 	public static void main(String[] args) {
+		System.out.println("hello");
 		Game game = new Game();
 		
 		var graphic = new MainGraphic();

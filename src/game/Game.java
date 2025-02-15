@@ -26,6 +26,12 @@ public class Game {
 		}
 	}
 	
+	public void dash() {
+		if (player.dash()) {
+			SpriteContainer.dash(player.getDir());
+		}
+	}
+	
 	public void majCharacter(Direction dir) {
 		player.changeDirection(dir);
 	}

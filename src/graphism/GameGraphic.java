@@ -70,10 +70,10 @@ public class GameGraphic extends JComponent {
 			
 			g2d.fillArc((int) (tPos.x()- Player.WIDTH/2 -upperLeft.x()), (int) (tPos.y() -Player.HEIGHT/2 -upperLeft.y()),  Player.WIDTH, Player.HEIGHT, 90, tTime);
 		}
-		g.setColor(Color.BLACK);
-		var rec = game.player.getHitbox();
-		rec.translate((int) -upperLeft.x(), (int) -upperLeft.y());
-		g2d.draw(rec);
+//		g.setColor(Color.BLACK);
+//		var rec = game.player.getHitbox();
+//		rec.translate((int) -upperLeft.x(), (int) -upperLeft.y());
+//		g2d.draw(rec);
 	}
 	
     @Override

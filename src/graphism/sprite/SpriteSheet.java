@@ -13,8 +13,10 @@ public class SpriteSheet {
     }
     
     public void next() {
-    	if (current < sprites.size() - 1) {
+    	if (0 <= current && current < sprites.size() - 1) {
     		current++;
+    	}else {
+    		current = sprites.size() - 1;
     	}
     }
     public void back() {
@@ -22,12 +24,19 @@ public class SpriteSheet {
     		current--;
     	}
     }
+    
+    public boolean isDone() {
+    	return current == sprites.size() - 1;
+    }
 
     public int getIndex() {
     	return current;
     }
     
     public void set(int current) {
+    	if (current >= sprites.size() - 1 || current < 0) {
+    		this.current = 0;
+    	}
     	this.current = current;
     }
     
@@ -36,6 +45,9 @@ public class SpriteSheet {
     }
     
     public BufferedImage getSprite() {
+    	if (current >= sprites.size() -1) { // panseman
+    		return sprites.get(sprites.size() -1);
+    	}
         return sprites.get(current);
     }
 
