@@ -9,6 +9,7 @@ import javax.swing.JComponent;
 
 import game.Game;
 import game.Player;
+import graphism.sprite.SpriteContainer;
 import util.Vector;
 
 public class GameGraphic extends JComponent {
@@ -51,11 +52,16 @@ public class GameGraphic extends JComponent {
 			g.setColor(Color.BLUE);
 		}
 		var pos = game.player.getPos();
-		g.fillOval((int) (pos.x() -upperLeft.x() - Player.WIDTH/2 ) ,(int) (pos.y() -upperLeft.y()-Player.WIDTH/2), Player.WIDTH, Player.WIDTH);
-		g.setColor(Color.BLACK);
-		var rec = game.player.getHitbox();
-		rec.translate((int) -upperLeft.x(), (int) -upperLeft.y());
-		g2d.draw(rec);
+		var img = SpriteContainer.getImage();
+		if (img == null) {
+			g.fillOval((int) (pos.x() -upperLeft.x() - Player.WIDTH/2 ) ,(int) (pos.y() -upperLeft.y()-Player.WIDTH/2), Player.WIDTH, Player.WIDTH);
+			g.setColor(Color.BLACK);
+			var rec = game.player.getHitbox();
+			rec.translate((int) -upperLeft.x(), (int) -upperLeft.y());
+			g2d.draw(rec);
+		}else {
+			g.drawImage(img, (int) (pos.x() -upperLeft.x() - Player.WIDTH/2 ), (int) (pos.y() -upperLeft.y()-Player.WIDTH/2), null);
+		}
 		
 		if (game.player.isTranslocator()) {
 			g.setColor(Color.MAGENTA);
@@ -65,6 +71,8 @@ public class GameGraphic extends JComponent {
 			
 			g2d.fillArc((int) (tPos.x()- Player.WIDTH/2 -upperLeft.x()), (int) (tPos.y() -Player.WIDTH/2 -upperLeft.y()),  Player.WIDTH, Player.WIDTH, 90, tTime);
 		}
+		
+		
 	}
 	
     @Override

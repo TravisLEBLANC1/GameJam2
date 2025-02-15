@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
@@ -58,43 +59,63 @@ public class Wall {
   public int getCollidingEdge(Player player) {
 	  Point2D  closestPoint = null;
 	  double minDistance = 0;
-	  var p2 = player.getHitbox();
 	  var playerPoint = player.getPos().toPoint2d();
+	  var playerHitbox = player.getHitbox();
 	  int resultEdge = NOTFOUND;
 	  
-      for (int i = 0; i < polygon.npoints; i++) {
-          int next1 = (i + 1) % polygon.npoints; // Wrap around to the first point
-          Line2D.Double edge1 = new Line2D.Double(polygon.xpoints[i], polygon.ypoints[i], polygon.xpoints[next1], polygon.ypoints[next1]);
-
-          for (int j = 0; j < p2.npoints; j++) {
-              int next2 = (j + 1) % p2.npoints;
-              Line2D.Double edge2 = new Line2D.Double(p2.xpoints[j], p2.ypoints[j], p2.xpoints[next2], p2.ypoints[next2]);
-              
-              if (edge1.intersectsLine(edge2)) {
-            	  Point2D point = getIntersection(edge1, edge2);
-            	  if (closestPoint == null) {
-            		  closestPoint = point;
-            		  minDistance = point.distance(playerPoint);
-            		  resultEdge = i;
-            	  }else {
-            		  double distance = point.distance(playerPoint);
-            		  
-            		  if (i != resultEdge && Math.abs(distance - minDistance) < EPSILON) {
-            			  // System.out.println("btw " + resultEdge + "  " + i  + " " + Math.abs(distance - minDistance));
-            			  resultEdge = CORNER;
-            		  }else if (distance < minDistance) {
-            			  // System.out.println(distance + " < " + minDistance + " so "+ polygon.xpoints[i] + " and " + polygon.ypoints[i]);
-	                      minDistance = distance;
-	                      resultEdge = i;
-	                      
-		              }
-            		  
-            	  }
-              }
+//	  System.out.println("player=" + playerPoint);
+	  for (int i = 0; i < polygon.npoints; i++) {
+          int next2 = (i + 1) % polygon.npoints;
+          var point = closestPointOnSegment(polygon.xpoints[i], polygon.ypoints[i], polygon.xpoints[next2], polygon.ypoints[next2], playerPoint.x, playerPoint.y);
+          if (!playerHitbox.contains(point)) {
+        	  continue;
           }
-      }
-      
+//          System.out.println(i + " is " + point + " close from " + playerPoint);
+          if (closestPoint == null) {
+    		  closestPoint = point;
+    		  minDistance = point.distance(playerPoint);
+    		  resultEdge = i;
+    	      Vector edge = new Vector(polygon.xpoints[next2] - polygon.xpoints[i], polygon.ypoints[next2] - polygon.ypoints[i]);
+    	  }else {
+	          var distance = point.distance(playerPoint);
+    		  if (Math.abs(distance - minDistance) < EPSILON) {
+//    			  System.out.println("btw " + resultEdge + "  " + i  + " " + Math.abs(distance - minDistance));
+    			  resultEdge = CORNER;
+    		  }else if (distance < minDistance) {
+//				  System.out.println(distance + " < " + minDistance );
+	              minDistance = distance;
+	              resultEdge = i;
+	              
+	          }
+    	  }
+	  }
       return resultEdge;
+  }
+  
+  public static Point2D.Double closestPointOnSegment(double ax, double ay, double bx,double by,double px,double py) {
+	    double xDelta = bx - ax;
+	    double yDelta = by - ay;
+
+	    if ((xDelta == 0) && (yDelta == 0))
+	    {
+	      throw new IllegalArgumentException("Segment start equals segment end");
+	    }
+	    double u = ((px - ax) * xDelta + (py - ay) * yDelta) / (xDelta * xDelta + yDelta * yDelta);
+
+	    Point2D.Double closestPoint;
+	    if (u < 0)
+	    {
+	      closestPoint = new Point2D.Double(ax, ay);
+	    }
+	    else if (u > 1)
+	    {
+	      closestPoint = new Point2D.Double(bx, by);
+	    }
+	    else
+	    {
+	      closestPoint = new Point2D.Double((int) Math.round(ax + u * xDelta), (int) Math.round(ay + u * yDelta));
+	    }
+	    return closestPoint;
   }
   
   public static Point2D getIntersection(final Line2D.Double line1, final Line2D.Double line2) {
@@ -130,10 +151,10 @@ public class Wall {
       int y2 = ypoints.get((edgeIndex+1) %nbpoints);
 
       Vector edge = new Vector(x2 - x1, y2 - y1);
-      System.out.println("edge=" + edge);
+//      System.out.println("edge=" + edge);
       // Compute normal (perpendicular vector)
       Vector normal = edge.perpendicular();
-      System.out.println("normal=" + normal);
+//      System.out.println("normal=" + normal);
       return normal.normalized();
   }
   

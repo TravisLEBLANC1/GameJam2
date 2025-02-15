@@ -20,7 +20,7 @@ public class Player {
 	private final double dashSpeedMultiplicator = 2.5;
 	private final double hitboxShift = 12;
 	
-	public static final int WIDTH = 50;
+	public static final int WIDTH = 63;
 	
 	// player variables
 	private Direction dir = Direction.NULL;
@@ -184,6 +184,12 @@ public class Player {
 				(int) (pos.y() +25 ), (int) (pos.y() +25 ),
 				(int) (pos.y() +25 - hitboxShift), (int) (pos.y() -25 + hitboxShift)};
 		return new Polygon(xpoints, ypoints, 8);
+		
+//		int[] xpoints = {(int) (pos.x() -25 ), (int) (pos.x() +25), 
+//				(int) (pos.x() +25 ), (int) (pos.x() -25 )};
+//		int[] ypoints = {(int) (pos.y() -25 ), (int) (pos.y() -25), 
+//				(int) (pos.y() +25 ), (int) (pos.y() +25 )};
+//		return new Polygon(xpoints, ypoints, 4);
 	}
 	
 	

@@ -3,11 +3,13 @@ package graphism;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.KeyListener;
+import java.io.IOException;
 
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
 import game.Game;
+import graphism.sprite.SpriteContainer;
 
 public class MainGraphic extends JFrame{
 	public static final String APPNAME = "SPEED_GHOST"; 
@@ -32,6 +34,12 @@ public class MainGraphic extends JFrame{
 	  public void init(Game game) {
 		  gameGraphic = new GameGraphic(game);
 		  add(gameGraphic);
+		  try {
+			 SpriteContainer.init();
+			
+			} catch (IOException e) {
+				System.err.println(e + " while loading sprites");
+			}
 	  }
 	  
 	  public void inputUser(KeyListener inputUser) {
