@@ -25,14 +25,27 @@ public class Game {
 		var wall = map.touchWall(player);
 		if (wall != null) {
 			int edge = wall.getCollidingEdge(player);
-			if (edge < 0) {
-				System.out.println("hMmm...");
-				
+			if (edge == Wall.NOTFOUND) {
+				// should not happen
+				System.out.println("hmmm...");
 			}else {
-				var normal = wall.getEdgeNormal(edge);
-				player.bounce(normal);
+				if (edge == Wall.CORNER){
+					player.bounceOpposite();
+					System.out.println("corner");
+				}else {
+					var normal = wall.getEdgeNormal(edge);
+					player.bounce(normal);
+					player.teleport(old);
+				}
+				 
+//				int i = 0;
+//				while (wall.intersects(player.getHitbox())) {
+//					i++;
+//					player.urgenceMove();
+//					System.out.println(player.getSpeed());
+//				}
+//				System.out.println(i + " tic");
 			}
-			player.teleport(old);
 		}
 	}
 }

@@ -1,5 +1,6 @@
 package game;
 
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 
@@ -13,13 +14,14 @@ public class Player {
 	private final double EPSILON = 1; // if it's lower then it's 0
 	private final double friction = 0.98;
 	private final double dashSpeedMultiplicator = 2;
+	private final double hitboxShift = 12;
 	
 	// player variables
 	private Direction dir = Direction.NULL;
 	private Direction lastDir = Direction.NULL;
 	private Direction dashDir = Direction.NULL;
 	private  Vector prev = new Vector(500,500);
-	private  Vector pos = new Vector(500,500);
+	private  Vector pos = new Vector(550,500);
 	private Vector speed = Vector.NULL;
 	private double maxSpeed = 6.5;
 	private double dashSpeed = maxSpeed *dashSpeedMultiplicator;
@@ -77,18 +79,30 @@ public class Player {
 	
 	public void move() {
 		// speed managment
+
 		changeSpeed();
+		
 		// actual movement
 	    long currentTime = System.nanoTime();
 	    long elapsedTime = (currentTime - lastMaj)/1000000 ;
 	    lastMaj = currentTime;
 		prev = pos;
-		pos = Vector.add(pos, speed.times(elapsedTime/16));
+		pos = Vector.add(pos, speed.times(elapsedTime/(double) 16));
+	}
+
+	public void urgenceMove() {
+		// move without elapsed Time
+		pos = Vector.add(pos, speed);
 	}
 	
 	public void bounce(Vector normal) {
 		speed = Vector.sub(speed, normal.times(2*Vector.scalar(speed, normal)));
-		System.out.println(speed);
+		System.out.println("bounce " + speed);
+		move();
+	}
+	
+	public void bounceOpposite() {
+		speed = speed.opposite();
 	}
 	
 	public Vector getPos() {
@@ -97,6 +111,10 @@ public class Player {
 	
 	public Vector getPrevPos() {
 		return prev;
+	}
+	
+	public Vector getSpeed() {
+		return speed;
 	}
 	
 	public Direction getDir() {
@@ -115,7 +133,15 @@ public class Player {
 		this.pos = pos;
 	}
 	
-	public Rectangle getHitbox() {
-		return new Rectangle((int) pos.x()-25, (int) pos.y()-25, 50, 50);
+	public Polygon getHitbox() {
+		int[] xpoints = {(int) (pos.x() -25 + hitboxShift), (int) (pos.x() +25 - hitboxShift), 
+						(int) (pos.x() +25), (int) (pos.x() +25), 
+						(int) (pos.x() +25 - hitboxShift), (int) (pos.x() -25 + hitboxShift),
+						(int) (pos.x() -25), (int) (pos.x() -25)};
+		int[] ypoints = {(int) (pos.y() -25), (int) (pos.y() -25), 
+				(int) (pos.y() -25 + hitboxShift), (int) (pos.y() +25 - hitboxShift), 
+				(int) (pos.y() +25 ), (int) (pos.y() +25 ),
+				(int) (pos.y() +25 - hitboxShift), (int) (pos.y() -25 + hitboxShift)};
+		return new Polygon(xpoints, ypoints, 8);
 	}
 }

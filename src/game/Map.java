@@ -13,9 +13,11 @@ public class Map {
 		// TODO temporary
 		walls.add(new Wall(new Rectangle(50,50, 900,20)));
 		walls.add(new Wall(new Rectangle(50,50, 20, 700)));
-		walls.add(new Wall(new Rectangle(950,50, 20 ,700)));
+		walls.add(new Wall(new Rectangle(950,50, 20 ,720)));
 		walls.add(new Wall(new Rectangle(50,750, 900,20)));
-		
+		int[] xpoints = {200, 500, 480, 180};
+		int[] ypoints = {200, 500, 520, 220};
+		walls.add(new Wall(xpoints, ypoints, 4));
 	}
 	
 	public List<Wall> getWalls(){
