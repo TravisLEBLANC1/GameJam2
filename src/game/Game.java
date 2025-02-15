@@ -9,6 +9,7 @@ public class Game {
     private Timer updateTimer = new Timer(TIC, e -> updateCharacters());
 	public Map map = new Map();
 	public Player player = new Player();
+    public NPC npc = new NPC();
     private boolean running = true;
     
 	public void start() {
@@ -23,6 +24,8 @@ public class Game {
 	private void updateCharacters() {
 		var old = player.getPos();
 		player.move();
+		npc.move();
+		
 		var wall = map.touchWall(player);
 		if (wall != null) {
 			int edge = wall.getCollidingEdge(player);

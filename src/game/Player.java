@@ -26,8 +26,8 @@ public class Player {
 	private Direction dir = Direction.NULL;
 	private Direction lastDir = Direction.NULL;
 	private Direction dashDir = Direction.NULL;
-	private  Vector translocatorPos = null;
-	private  Vector pos = new Vector(550,500);
+	private Vector translocatorPos = null;
+	private Vector pos = new Vector(550,500);
 	private Vector speed = Vector.NULL;
 	private double maxSpeed = 9;
 	private double dashSpeed = maxSpeed *dashSpeedMultiplicator;

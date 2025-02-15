@@ -3,6 +3,8 @@ package main;
 import game.Game;
 import game.io.KeyInput;
 import graphism.MainGraphic;
+import util.Vector;
+import game.NPC;
 
 public class Main {
 

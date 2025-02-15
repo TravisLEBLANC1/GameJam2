@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import javax.swing.JComponent;
 
 import game.Game;
+import game.NPC;
 import game.Player;
 
 public class GameGraphic extends JComponent {
@@ -55,11 +56,22 @@ public class GameGraphic extends JComponent {
 		}
 	}
 	
+	public void paintNPC(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;  // Cast to Graphics2
+		g.setColor(Color.YELLOW);
+		var pos = game.npc.getPos();
+		g.fillOval((int) pos.x()- NPC.WIDTH/2,(int) pos.y()-NPC.WIDTH/2, NPC.WIDTH, NPC.WIDTH);
+		g.setColor(Color.BLACK);
+		var rec = game.npc.getHitbox();
+		g2d.draw(rec);
+	}
+	
     @Override
     protected void paintComponent(Graphics g) {
        super.paintComponent(g);
        paintWalls(g);
        paintPlayer(g);
        paintButtons(g);
+       paintNPC(g);
     }
 }
