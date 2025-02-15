@@ -9,7 +9,8 @@ public class Game {
     private Timer updateTimer = new Timer(TIC, e -> updateCharacters());
 	public Map map = new Map();
 	public Player player = new Player();
-	
+    private boolean running = true;
+    
 	public void start() {
 		updateTimer.start();
 		player.resetSpeed();

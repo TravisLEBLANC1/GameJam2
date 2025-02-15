@@ -15,6 +15,9 @@ public class Main {
 		var input = new KeyInput(game);
 		graphic.inputUser(input);
 		game.start();
+		graphic.run();
 	}
+	
+	
 
 }
