@@ -2,10 +2,12 @@ package graphism;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
 
 import game.Game;
+import game.Player;
 
 public class GameGraphic extends JComponent {
 	private Game game;
@@ -18,7 +20,7 @@ public class GameGraphic extends JComponent {
 	    var walls = game.map.getWalls();
 	    for (var wall : walls) {
 	      g.setColor(Color.GRAY);
-	      g.fillRect(wall.x, wall.y, wall.width, wall.height);
+	      g.fillPolygon(wall.getPolygon());
 }
 	}
 
@@ -31,9 +33,26 @@ public class GameGraphic extends JComponent {
 	}
 	
 	public void paintPlayer(Graphics g) {
-		g.setColor(Color.BLUE);
+		Graphics2D g2d = (Graphics2D) g;  // Cast to Graphics2
+		if (game.player.isDashing()) {
+			g.setColor(Color.RED);
+		}else {
+			g.setColor(Color.BLUE);
+		}
 		var pos = game.player.getPos();
-		g.fillOval((int) pos.x(),(int) pos.y(), 50, 50);
+		g.fillOval((int) pos.x()- Player.WIDTH/2,(int) pos.y()-Player.WIDTH/2, Player.WIDTH, Player.WIDTH);
+		g.setColor(Color.BLACK);
+		var rec = game.player.getHitbox();
+		g2d.draw(rec);
+		
+		if (game.player.isTranslocator()) {
+			g.setColor(Color.MAGENTA);
+			
+			var tPos = game.player.getTranslocatorPos();
+			var tTime = game.player.getTranslocatorTime();
+			
+			g2d.fillArc((int) tPos.x()- Player.WIDTH/2, (int) tPos.y() -Player.WIDTH/2,  Player.WIDTH, Player.WIDTH, 90, tTime);
+		}
 	}
 	
     @Override

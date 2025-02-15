@@ -13,8 +13,12 @@ public class MainGraphic extends JFrame{
 	public static final String APPNAME = "SPEED_GHOST"; 
 	public static final Color BACKGROUNDCOLOR = Color.white;
 	public static final int FPS = 60;
-    private Timer updateTimer = new Timer(1000/FPS, e -> repaint());
+	private Timer updateTimer = new Timer(1000/FPS, e -> draw());
+
 	private GameGraphic gameGraphic;
+	private boolean running = true;
+	private int x;
+	
 	private Game game;
 	  public MainGraphic() {
 	    super(APPNAME);
@@ -22,7 +26,6 @@ public class MainGraphic extends JFrame{
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Close when "X" is clicked
 	    setSize(1080, 900);  // Set window size
 	    setVisible(true);
-	    updateTimer.start();
 	  }
 	  
 	  public void init(Game game) {
@@ -37,4 +40,29 @@ public class MainGraphic extends JFrame{
 	      revalidate();
 	      repaint();
 	  }
+	  
+	  public void draw() {
+		  repaint();
+	  }
+    public void run() {
+        int fps = 60;
+        long timePerFrame = 1000 / fps; // Milliseconds per frame
+
+        while (running) {
+            long startTime = System.currentTimeMillis();
+
+            repaint();
+
+            long elapsedTime = System.currentTimeMillis() - startTime;
+            long sleepTime = timePerFrame - elapsedTime;
+
+            if (sleepTime > 0) {
+                try {
+                    Thread.sleep(sleepTime);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 }

@@ -1,6 +1,6 @@
 package util;
 
-
+import java.awt.geom.Point2D;
 
 public record Vector(double x, double y) {
   private static final double R2 = 1/Math.sqrt(2); 
@@ -43,16 +43,40 @@ public record Vector(double x, double y) {
     return Math.sqrt(x*x + y*y);
   }
   
-  public Vector normalized() {
+  public Vector normalized(double norm) {
     var n = norme();
     if(Math.abs(x) < EPSILON && Math.abs(y) < EPSILON)
       return NULL;
     if(Math.abs(x) < EPSILON)
-      return new Vector(0, y/n);
+      return new Vector(0, (y/n)*norm);
     if(Math.abs(y) < EPSILON)
-      return new Vector(x/n, 0);
+      return new Vector((x/n)*norm, 0);
     
-    return new Vector(x/n, y/n);
+    return new Vector((x/n)*norm, (y/n)*norm);
+  }
+  
+  public Vector perpendicular() {
+	  if (x == 0) {
+		  return new Vector(-y, x);
+	  }else {
+		  return new Vector(y, -x);
+	  }
+  }
+  
+  public Vector normalized() {
+	    var n = norme();
+	    if(Math.abs(x) < EPSILON && Math.abs(y) < EPSILON)
+	      return NULL;
+	    if(Math.abs(x) < EPSILON)
+	      return new Vector(0, y/n);
+	    if(Math.abs(y) < EPSILON)
+	      return new Vector(x/n, 0);
+	    
+	    return new Vector(x/n, y/n);
+	  }
+  
+  public Vector opposite() {
+	  return new Vector(-x, -y);
   }
   
   public static Vector add(Vector v1, Vector v2) {
@@ -64,8 +88,16 @@ public record Vector(double x, double y) {
   }
   
   
+  public static double scalar(Vector v1, Vector v2) {
+	  return v1.x*v2.x + v1.y*v2.y;
+  }
+  
   public Vector times(double lambda) {
     return new Vector(lambda*x, lambda*y);
+  }
+  
+  public Point2D.Double toPoint2d() {
+	  return new Point2D.Double(x,y);
   }
   
   @Override
