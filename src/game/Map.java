@@ -9,7 +9,7 @@ import java.util.List;
 public class Map {
 	private ArrayList<Wall> walls = new ArrayList<>();
   private ArrayList<Rectangle> buttons = new ArrayList<>();
-	
+  
 	public Map() {
 		// TODO temporary
 		walls.add(new Wall(new Rectangle(50,50, 900,20)));
