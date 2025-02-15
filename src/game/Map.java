@@ -41,7 +41,7 @@ public class Map {
 		return buttons;
 	}
 	
-	public boolean isPresed(Rectangle hitbox) {
-		return buttons.stream().anyMatch(w -> w.intersects(hitbox));
+	public boolean isPresed(Polygon hitbox) {
+		return buttons.stream().anyMatch(w -> hitbox.intersects(w));
 	}
 }
