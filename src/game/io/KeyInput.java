@@ -65,6 +65,7 @@ public class KeyInput implements KeyListener  {
 	      case KeyEvent.VK_CAPS_LOCK -> {
 	        capsToggle = ! capsToggle;
 	      }
+	      case KeyEvent.VK_E -> game.interaction(directionFromPressed());
 	    }
 	    game.majCharacter(directionFromPressed());
 	  }

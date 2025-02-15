@@ -22,6 +22,14 @@ public class GameGraphic extends JComponent {
 }
 	}
 
+	public void paintButtons(Graphics g) {
+	    var buttons = game.map.getButtons();
+	    for (var button : buttons) {
+	      g.setColor(Color.BLACK);
+	      g.fillRect(button.x, button.y, button.width, button.height);
+}
+	}
+	
 	public void paintPlayer(Graphics g) {
 		g.setColor(Color.BLUE);
 		var pos = game.player.getPos();
@@ -33,5 +41,6 @@ public class GameGraphic extends JComponent {
        super.paintComponent(g);
        paintWalls(g);
        paintPlayer(g);
+       paintButtons(g);
     }
 }

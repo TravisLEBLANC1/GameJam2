@@ -24,4 +24,6 @@ public class Player {
 	public Rectangle getHitbox() {
 		return new Rectangle((int) pos.x(), (int) pos.y(), 50, 50);
 	}
+	
+	
 }

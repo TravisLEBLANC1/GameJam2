@@ -13,7 +13,7 @@ public class MainGraphic extends JFrame{
 	public static final String APPNAME = "SPEED_GHOST"; 
 	public static final Color BACKGROUNDCOLOR = Color.white;
 	public static final int FPS = 60;
-	  private Timer updateTimer = new Timer(1000/FPS, e -> repaint());
+    private Timer updateTimer = new Timer(1000/FPS, e -> repaint());
 	private GameGraphic gameGraphic;
 	private Game game;
 	  public MainGraphic() {

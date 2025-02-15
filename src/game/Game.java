@@ -13,5 +13,14 @@ public class Game {
 		if (map.isNotValid(player.getHitbox())) {
 			player.teleport(old);
 		}
+//		if (map.isPresed(player.getHitbox())) {
+//			System.out.println("Presed");
+//		}
+	}
+	
+	public void interaction(Direction dir) {
+		if (map.isPresed(player.getHitbox())) {
+			System.out.println("Implémenter actions");
+		}
 	}
 }
