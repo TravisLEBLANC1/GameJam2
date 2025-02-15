@@ -12,6 +12,8 @@ public class Game {
     public NPC npc = new NPC();
     private boolean running = true;
     
+    CountdownTimer timer = new CountdownTimer(10);
+    
 	public void start() {
 		updateTimer.start();
 		player.resetSpeed();
@@ -58,7 +60,13 @@ public class Game {
 	
 	public void interaction(Direction dir) {
 		if (map.isPresed(player.getHitbox())) {
+			npc.skip();
+			timer.start();
 			System.out.println("Implémenter actions");
 		}
+	}
+	
+	public void loose() {
+		System.out.println("You loose !");
 	}
 }

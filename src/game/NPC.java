@@ -20,6 +20,8 @@ public class NPC {
     private double maxSpeed = 2.0;
 	private long lastMaj = System.nanoTime();
 	
+	private long startTime = System.nanoTime();
+	
 	public void move() {
         if (!isMoving) {
             return;
@@ -32,12 +34,12 @@ public class NPC {
 
         // actual movement
 	    long currentTime = System.nanoTime();
-	    long elapsedTime = (currentTime - lastMaj) / 1000000; // Conversion en ms
+	    long elapsedTime = (currentTime - lastMaj) / 1000000;
 	    lastMaj = currentTime;
 	    
 	    if (targets.isEmpty()) return; 
 	    
-	    Vector targetPos = targets.get(currentTargetIndex); // Cible actuelle
+	    Vector targetPos = targets.get(currentTargetIndex);
         // Target Direction
         Vector direction = Vector.sub(targetPos, pos);
         double distance = direction.norme();
@@ -59,6 +61,13 @@ public class NPC {
                 isMoving = false;
             }
         }
+        
+        // Timer
+        
+	}
+	
+	public void skip() {
+		currentTargetIndex++;
 	}
 	
 	public Vector getPos() {
