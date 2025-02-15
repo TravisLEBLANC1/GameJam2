@@ -13,7 +13,7 @@ import util.Vector;
 
 public class GameGraphic extends JComponent {
 	private Game game;
-	private Vector cameraShift = new Vector(MainGraphic.WINWIDTH/2, MainGraphic.WINHEIGHT/2);
+
 	private Vector upperLeft;
 	
 	public GameGraphic(Game game) {
@@ -21,7 +21,7 @@ public class GameGraphic extends JComponent {
 	}
 	
 	private void calculateUpperLeft() {
-		upperLeft = Vector.sub(game.player.getPos(), cameraShift);
+		upperLeft = game.cam.getUpperLeft();
 	}
 	
 	public void paintWalls(Graphics g) {
@@ -51,7 +51,7 @@ public class GameGraphic extends JComponent {
 			g.setColor(Color.BLUE);
 		}
 		var pos = game.player.getPos();
-		g.fillOval((int) (MainGraphic.WINWIDTH/2- Player.WIDTH/2 ) ,(int) (MainGraphic.WINHEIGHT/2-Player.WIDTH/2), Player.WIDTH, Player.WIDTH);
+		g.fillOval((int) (pos.x() -upperLeft.x() - Player.WIDTH/2 ) ,(int) (pos.y() -upperLeft.y()-Player.WIDTH/2), Player.WIDTH, Player.WIDTH);
 		g.setColor(Color.BLACK);
 		var rec = game.player.getHitbox();
 		rec.translate((int) -upperLeft.x(), (int) -upperLeft.y());

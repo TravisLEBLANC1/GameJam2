@@ -84,11 +84,13 @@ public class Player {
 		}
 	}
 	
-	public void translocator() {
+	public boolean translocator() {
 		if (canTranslocator()) {
 			transloBeginTime = System.nanoTime();
 			translocatorPos = pos;
+			return true;
 		}
+		return false;
 	}
 	
 	private void checkTranslocator() {

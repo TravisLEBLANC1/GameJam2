@@ -2,6 +2,7 @@ package game;
 
 import javax.swing.Timer;
 
+import graphism.Camera;
 import util.Direction;
 
 public class Game {
@@ -9,11 +10,19 @@ public class Game {
     private Timer updateTimer = new Timer(TIC, e -> updateCharacters());
 	public Map map = new Map();
 	public Player player = new Player();
+	public Camera cam = new Camera(player);
     private boolean running = true;
     
 	public void start() {
 		updateTimer.start();
 		player.resetSpeed();
+	}
+	
+	public void translocator() {
+		var old = player.getPos();
+		if (player.translocator()) {
+			cam.teleport(old);
+		}
 	}
 	
 	public void majCharacter(Direction dir) {
@@ -52,6 +61,7 @@ public class Game {
 //		if (map.isPresed(player.getHitbox())) {
 //			System.out.println("Presed");
 //		}
+		cam.maj();
 	}
 	
 	public void interaction(Direction dir) {

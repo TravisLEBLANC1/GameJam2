@@ -60,7 +60,7 @@ public class KeyInput implements KeyListener  {
 	      case KeyEvent.VK_RIGHT, KeyEvent.VK_D ->isPressed |= FLAGRIGHT;
 	      case KeyEvent.VK_DOWN, KeyEvent.VK_S -> isPressed |= FLAGDOWN;
 	      case KeyEvent.VK_LEFT, KeyEvent.VK_Q -> isPressed |= FLAGLEFT;
-	      case KeyEvent.VK_SHIFT -> game.player.translocator();
+	      case KeyEvent.VK_SHIFT -> game.translocator();
 	      case KeyEvent.VK_CONTROL -> cmdisPressed |= FLAGCTRL;
 	      case KeyEvent.VK_SPACE -> game.player.dash();
 	      case KeyEvent.VK_CAPS_LOCK -> {
