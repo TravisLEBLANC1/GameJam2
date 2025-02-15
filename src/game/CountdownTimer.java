@@ -1,35 +1,37 @@
 package game;
 
 public class CountdownTimer {
-    private long startTime;
-    private long currentTime;
-    private long duration;
-    private long remainingTime;
+    private final long duration; // Durée en nanosecondes
+    private boolean running = false;
 
-    public CountdownTimer(long durationSeconds) {
+    public CountdownTimer(int durationSeconds) {
         this.duration = durationSeconds * 1_000_000_000L; // Convertir s → ns
     }
 
     public void start() {
-    	startTime = System.nanoTime();
-        while (!isFinished()) {
-            long oldTime = remainingTime;
-        	long remainingTime = getRemainingSeconds();
-            if(oldTime != remainingTime) {
-            	System.out.print("\rTemps restant : " + remainingTime + "s ");
-            } else {
-            	
+        if (running) return;
+        running = true;
+
+        Thread thread = new Thread(() -> {
+            long startTime = System.nanoTime();
+
+            while (running) {
+                long remainingTime = Math.max((duration - (System.nanoTime() - startTime)) / 1_000_000_000L, 0);
+                System.out.println("Temps restant : " + remainingTime + "s");
+
+                if (remainingTime == 0) {
+                    System.out.println("Temps écoulé !");
+                    running = false;
+                }
+
+                sleep(1000);
             }
-        }
-        System.out.println("\nTemps écoulé !");
+        });
+
+        thread.start();
     }
 
-    private boolean isFinished() {
-        return (System.nanoTime() - startTime) >= duration;
-    }
-
-    private long getRemainingSeconds() {
-        long elapsed = System.nanoTime() - startTime;
-        return Math.max((duration - elapsed) / 1_000_000_000L, 0);
+    private void sleep(int ms) {
+        try { Thread.sleep(ms); } catch (InterruptedException e) { e.printStackTrace(); }
     }
 }
