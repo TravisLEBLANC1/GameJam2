@@ -82,10 +82,10 @@ public class GameGraphic extends JComponent {
 		Graphics2D g2d = (Graphics2D) g;  // Cast to Graphics2
 		g.setColor(Color.YELLOW);
 		var pos = game.npc.getPos();
-		g.fillOval((int) pos.x()- NPC.WIDTH/2,(int) pos.y()-NPC.WIDTH/2, NPC.WIDTH, NPC.WIDTH);
-		g.setColor(Color.BLACK);
-		var rec = game.npc.getHitbox();
-		g2d.draw(rec);
+		g.fillOval((int)( pos.x()- NPC.WIDTH/2 -upperLeft.x()),(int) (pos.y()-NPC.WIDTH/2-upperLeft.y()), NPC.WIDTH, NPC.WIDTH);
+//		g.setColor(Color.BLACK);
+//		var rec = game.npc.getHitbox();
+//		g2d.draw(rec);
 	}
 	
     @Override
