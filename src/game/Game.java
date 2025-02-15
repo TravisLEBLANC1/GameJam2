@@ -28,7 +28,14 @@ public class Game {
     
     public void initNPC() {
     	// buttons objects
-    	var but1 = new ObjectInteract(EventEnum.TASSE, new Rectangle (1090,700,50,50));
+    	
+    	var but1 = new ObjectInteract(EventEnum.FISH, new Rectangle (1900,450,50,50));
+    	map.addButton(but1);
+    	npc.addTarget(new Vector(2000, 450), but1);
+    	
+    	npc.addTarget(new Vector(1500, 700), ObjectInteract.empty());
+    	
+    	but1 = new ObjectInteract(EventEnum.TASSE, new Rectangle (1090,700,50,50));
     	map.addButton(but1);
     	npc.addTarget(new Vector(1110, 700), but1);
     	
@@ -41,6 +48,8 @@ public class Game {
     	npc.addTarget(new Vector(350, 450), but1);
     	
     	npc.addTarget(new Vector(100, 200), ObjectInteract.empty());
+    	
+
     	
     	
     	// timer objets
