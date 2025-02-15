@@ -14,13 +14,16 @@ public class Player {
 	private final long translocatorTime = 3000; // in ms
 	private final long dashCoolDown = 800; // in ms
 	private final long translocatorCoolDown = 10000; // in ms
+	private final long stunedTime = 40;
+
 	
 	private final double EPSILON = 1; // if it's lower then it's 0
 	private final double friction = 0.98;
 	private final double dashSpeedMultiplicator = 2.5;
 	private final double hitboxShift = 12;
 	
-	public static final int WIDTH = 63;
+	public static final int WIDTH = 44;
+	public static final int HEIGHT = 30;
 	
 	// player variables
 	private Direction dir = Direction.NULL;
@@ -33,9 +36,10 @@ public class Player {
 	private double dashSpeed = maxSpeed *dashSpeedMultiplicator;
 	private long dashBeginTime = 0;
 	private long transloBeginTime = 0;
-	
+	private long stunedBeginTime = 0;
+	private boolean isStuned = false;
 
-	private long lastMaj = 0;
+	private long lastMaj = System.nanoTime();
 	
 	public void resetSpeed() {
 		speed = new Vector(0, 0);
@@ -118,15 +122,20 @@ public class Player {
 	}
 	
 	public void move() {
+	    long currentTime = System.nanoTime();
+	    long elapsedTime = (currentTime - lastMaj)/1000000 ;
+	    lastMaj = currentTime;
 		checkTranslocator();
-		
+	    if (isStuned) {
+	    	stunedMaj();
+	    	return;
+	    }
 		// speed managment
 		changeSpeed();
 		
 		// actual movement
-	    long currentTime = System.nanoTime();
-	    long elapsedTime = (currentTime - lastMaj)/1000000 ;
-	    lastMaj = currentTime;
+
+
 		pos = Vector.add(pos, speed.times(elapsedTime/(double) 16));
 	}
 
@@ -139,10 +148,22 @@ public class Player {
 		// System.out.println("scalar = " + normal.times(2*Vector.scalar(speed, normal)));
 		speed = Vector.sub(speed, normal.times(2*Vector.scalar(speed, normal)));
 		// System.out.println("speed = " +speed);
+		isStuned = true;
+		stunedBeginTime = System.nanoTime();
 	}
 	
 	public void bounceOpposite() {
 		speed = speed.opposite();
+		isStuned = true;
+		stunedBeginTime = System.nanoTime();
+	}
+	
+	public void stunedMaj() {
+		long currentTime = System.nanoTime();
+	    long elapsedTime = (currentTime - stunedBeginTime)/1000000; // convert fro nano to ms
+		if(elapsedTime > stunedTime) {
+			isStuned = false;
+		}
 	}
 	
 	public Vector getPos() {
@@ -175,21 +196,21 @@ public class Player {
 	}
 	
 	public Polygon getHitbox() {
-		int[] xpoints = {(int) (pos.x() -25 + hitboxShift), (int) (pos.x() +25 - hitboxShift), 
-						(int) (pos.x() +25), (int) (pos.x() +25), 
-						(int) (pos.x() +25 - hitboxShift), (int) (pos.x() -25 + hitboxShift),
-						(int) (pos.x() -25), (int) (pos.x() -25)};
-		int[] ypoints = {(int) (pos.y() -25), (int) (pos.y() -25), 
-				(int) (pos.y() -25 + hitboxShift), (int) (pos.y() +25 - hitboxShift), 
-				(int) (pos.y() +25 ), (int) (pos.y() +25 ),
-				(int) (pos.y() +25 - hitboxShift), (int) (pos.y() -25 + hitboxShift)};
-		return new Polygon(xpoints, ypoints, 8);
+//		int[] xpoints = {(int) (pos.x() -WIDTH/2 + hitboxShift), (int) (pos.x() +WIDTH/2 - hitboxShift), 
+//						(int) (pos.x() +WIDTH/2), (int) (pos.x() +WIDTH/2), 
+//						(int) (pos.x() +WIDTH/2 - hitboxShift), (int) (pos.x() -WIDTH/2 + hitboxShift),
+//						(int) (pos.x() -WIDTH/2), (int) (pos.x() -WIDTH/2)};
+//		int[] ypoints = {(int) (pos.y() -HEIGHT/2), (int) (pos.y() -HEIGHT), 
+//				(int) (pos.y() -HEIGHT + hitboxShift), (int) (pos.y() +HEIGHT/2 - hitboxShift), 
+//				(int) (pos.y() +HEIGHT ), (int) (pos.y() +HEIGHT ),
+//				(int) (pos.y() +HEIGHT/2 - hitboxShift), (int) (pos.y() -HEIGHT/2+ hitboxShift)};
+//		return new Polygon(xpoints, ypoints, 8);
 		
-//		int[] xpoints = {(int) (pos.x() -25 ), (int) (pos.x() +25), 
-//				(int) (pos.x() +25 ), (int) (pos.x() -25 )};
-//		int[] ypoints = {(int) (pos.y() -25 ), (int) (pos.y() -25), 
-//				(int) (pos.y() +25 ), (int) (pos.y() +25 )};
-//		return new Polygon(xpoints, ypoints, 4);
+		int[] xpoints = {(int) (pos.x() -WIDTH/2 ), (int) (pos.x() +WIDTH/2), 
+				(int) (pos.x() +WIDTH/2 ), (int) (pos.x() -WIDTH/2 )};
+		int[] ypoints = {(int) (pos.y() -HEIGHT/2 ), (int) (pos.y() -HEIGHT/2), 
+				(int) (pos.y() +HEIGHT/2 ), (int) (pos.y() +HEIGHT/2 )};
+		return new Polygon(xpoints, ypoints, 4);
 	}
 	
 	

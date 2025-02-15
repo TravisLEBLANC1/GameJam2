@@ -13,6 +13,8 @@ import graphism.sprite.SpriteContainer;
 import util.Vector;
 
 public class GameGraphic extends JComponent {
+	private static final int xshiftImage = 13;
+	private static final int yshiftImage = 15;
 	private Game game;
 
 	private Vector upperLeft;
@@ -54,13 +56,10 @@ public class GameGraphic extends JComponent {
 		var pos = game.player.getPos();
 		var img = SpriteContainer.getImage();
 		if (img == null) {
-			g.fillOval((int) (pos.x() -upperLeft.x() - Player.WIDTH/2 ) ,(int) (pos.y() -upperLeft.y()-Player.WIDTH/2), Player.WIDTH, Player.WIDTH);
-			g.setColor(Color.BLACK);
-			var rec = game.player.getHitbox();
-			rec.translate((int) -upperLeft.x(), (int) -upperLeft.y());
-			g2d.draw(rec);
+			g.fillOval((int) (pos.x() -upperLeft.x() - Player.WIDTH/2 ) ,(int) (pos.y() -upperLeft.y()-Player.HEIGHT/2), 5, 5);
+
 		}else {
-			g.drawImage(img, (int) (pos.x() -upperLeft.x() - Player.WIDTH/2 ), (int) (pos.y() -upperLeft.y()-Player.WIDTH/2), null);
+			g.drawImage(img, (int) (pos.x() -upperLeft.x() - Player.WIDTH/2 -xshiftImage ), (int) (pos.y() -upperLeft.y()-Player.HEIGHT/2 -yshiftImage), null);
 		}
 		
 		if (game.player.isTranslocator()) {
@@ -69,10 +68,12 @@ public class GameGraphic extends JComponent {
 			var tPos = game.player.getTranslocatorPos();
 			var tTime = game.player.getTranslocatorTime();
 			
-			g2d.fillArc((int) (tPos.x()- Player.WIDTH/2 -upperLeft.x()), (int) (tPos.y() -Player.WIDTH/2 -upperLeft.y()),  Player.WIDTH, Player.WIDTH, 90, tTime);
+			g2d.fillArc((int) (tPos.x()- Player.WIDTH/2 -upperLeft.x()), (int) (tPos.y() -Player.HEIGHT/2 -upperLeft.y()),  Player.WIDTH, Player.HEIGHT, 90, tTime);
 		}
-		
-		
+		g.setColor(Color.BLACK);
+		var rec = game.player.getHitbox();
+		rec.translate((int) -upperLeft.x(), (int) -upperLeft.y());
+		g2d.draw(rec);
 	}
 	
     @Override

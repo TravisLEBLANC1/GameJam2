@@ -61,7 +61,6 @@ public class MainGraphic extends JFrame{
             long startTime = System.currentTimeMillis();
 
             repaint();
-
             long elapsedTime = System.currentTimeMillis() - startTime;
             long sleepTime = timePerFrame - elapsedTime;
 

@@ -3,6 +3,7 @@ package game;
 import javax.swing.Timer;
 
 import graphism.Camera;
+import graphism.sprite.SpriteContainer;
 import util.Direction;
 
 public class Game {
@@ -49,6 +50,7 @@ public class Game {
 					
 				}
 				player.teleport(old);
+				SpriteContainer.bonk(player.getDir());
 			}
 		}
 //		if (map.isPresed(player.getHitbox())) {
