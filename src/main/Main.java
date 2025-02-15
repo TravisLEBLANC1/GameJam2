@@ -12,16 +12,32 @@ import sound.SoundEnum;
 import sound.SoundPlayer;
 
 public class Main {
-
-	public static void main(String[] args) {
-		System.out.println("hello");
-		Game game = new Game();
-		
-		var graphic = new MainGraphic();
+	
+	private static Game game;
+	private static MainGraphic graphic;
+	private static Thread updates;
+	public static void restartGame() {
+		if (graphic != null) {
+			updates.interrupt();
+			graphic.stop();
+			graphic.dispose();
+		}
+		if (game != null) {
+			game.stop();
+		}
+		game = new Game();
+		graphic = new MainGraphic();
 		graphic.init(game);
 		var input = new KeyInput(game);
 		graphic.inputUser(input);
 		game.start();
+		updates = new Thread(graphic);
+		updates.start();
+	}
+	
+	public static void main(String[] args) {
+		System.out.println("hello");
+
 		try {
 			SoundPlayer.init();
 			SoundPlayer.setVolume(0.7);
@@ -31,22 +47,8 @@ public class Main {
 			System.err.println(e);
 		} catch (LineUnavailableException e) {
 			System.err.println(e);
-		}
-		;
-		graphic.run();
-
-	
-//		double hitboxShift = 12;
-//		var player = new Player();
-//		var pos = new Vector(49.442, 149.482);
-//		player.teleport(pos);
-//		var wall = new Wall(new Rectangle(00,50, 30,100));
-//		System.out.println(Arrays.toString(player.getHitbox().xpoints)); 
-//		System.out.println(Arrays.toString(player.getHitbox().ypoints));
-//		System.out.println(player.getHitbox().ypoints);
-//		System.out.println(wall.getCollidingEdge(player));
+		};
+		restartGame();
 	}
-	
-	
 
 }

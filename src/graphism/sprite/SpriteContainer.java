@@ -26,6 +26,7 @@ public class SpriteContainer {
 	private static SpriteSheet current;
 	private static SpriteSheet currentBonk;
 	private static SpriteSheet currentDash;
+	public static BufferedImage fire;
 	
 	private static boolean backward = true;
 	private static boolean isBonk = false;
@@ -45,6 +46,8 @@ public class SpriteContainer {
 	}
 	
 	public static void init() throws IOException {
+		fire = ImageIO.read(new File("images/fire.png"));
+		
 		BufferedImage sheet = ImageIO.read(new File("images/Walk_Down-Sheet.png"));
 		down = build(sheet, 4);
 		sheet = ImageIO.read(new File("images/Walk_Up-Sheet.png"));

@@ -5,11 +5,13 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
+import util.Vector;
+
 
 public class Map {
 	private ArrayList<Wall> walls = new ArrayList<>();
 
-	private ArrayList<ObjectInteract> buttons = new ArrayList<>();
+	private ArrayList<Button> buttons = new ArrayList<>();
 
   
 	public Map() {
@@ -21,9 +23,7 @@ public class Map {
 		int[] xpoints = {200, 500, 480, 180};
 		int[] ypoints = {200, 500, 520, 220};
 		walls.add(new Wall(xpoints, ypoints, 4));
-
-		buttons.add(new ObjectInteract(EventEnum.FISH, new Rectangle (300,400,50,50)));
-
+		
 		xpoints = new int[]{1500, 1800, 1780, 1480};
 		ypoints = new int[]{200, 500, 520, 220};
 		walls.add(new Wall(xpoints, ypoints, 4));
@@ -39,19 +39,29 @@ public class Map {
 //		walls.add(new Wall(new Rectangle(50,50, 20, 700)));
 	}
 	
-	private boolean basicCheck(EventEnum event) {
-		return buttons.stream().filter(b -> b.type == event).allMatch(b -> b.isValid());
+	public void addButton(Button but) {
+		buttons.add(but);
+	}
+	
+	private boolean basicCheck(ObjectInteract event) {
+		return event.isValid();
+	}
+	
+	private boolean unlockNext(ObjectInteract event) {
+		event.unlockNext();
+		return true;
 	}
 	
 	/*
 	 * return true if the event is validated
 	 * false otherwise (and we loose?)
 	 */
-	public boolean event(EventEnum event) {
-		return switch(event) {
+	public boolean event(ObjectInteract event) {
+		return switch(event.type) {
 		case NOEV -> true;
 		case FISH -> basicCheck(event);
 		case MOUSE -> basicCheck(event);
+		case UNLOCKTASSE -> unlockNext(event);
 		case TASSE -> basicCheck(event);
 		default -> {
 			System.out.println("event " + event + " inconnu");
@@ -75,13 +85,13 @@ public class Map {
 		return null;
 	}
 	
-	public List<ObjectInteract> getButtons(){
+	public List<Button> getButtons(){
 		return buttons;
 	}
 	
-	private void clickButton(ObjectInteract button, Polygon hitbox) {
+	private void clickButton(Button button, Polygon hitbox) {
 		if (button.intersects(hitbox)) {
-			button.nextState();
+			button.interact();
 		}
 	}
 	

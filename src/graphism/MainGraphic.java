@@ -1,25 +1,33 @@
 package graphism;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
 import java.io.IOException;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.Timer;
 
+import game.EventEnum;
 import game.Game;
 import graphism.sprite.SpriteContainer;
 
-public class MainGraphic extends JFrame{
+public class MainGraphic extends JFrame implements Runnable{
 	public static final String APPNAME = "SPEED_GHOST"; 
 	public static final Color BACKGROUNDCOLOR = Color.white;
 	public static final int FPS = 60;
 	private Timer updateTimer = new Timer(1000/FPS, e -> draw());
 	private GameGraphic gameGraphic;
-	private boolean running = true;
+	private static boolean running = true;
 	public static int WINWIDTH = 1080;
 	public static int WINHEIGHT = 900;
+	
 	
 	private Game game;
 	  public MainGraphic() {
@@ -53,10 +61,17 @@ public class MainGraphic extends JFrame{
 	  public void draw() {
 		  repaint();
 	  }
+	  
+	  public void stop() {
+		  running = false;
+		  setVisible(false);
+	  }
+	  
+	  @Override
     public void run() {
         int fps = 60;
         long timePerFrame = 1000 / fps; // Milliseconds per frame
-
+        running = true;
         while (running) {
             long startTime = System.currentTimeMillis();
 

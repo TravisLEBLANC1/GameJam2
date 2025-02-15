@@ -35,9 +35,10 @@ public class KeyInput implements KeyListener  {
 	  }
 	  
 	  
-	  private boolean ctrlIsPressed() {
-	    return (cmdisPressed & FLAGCTRL) > 0;
+	  public static boolean altIsPressed() {
+	    return (cmdisPressed & FLAGALT) != 0;
 	  }
+	  
 	  
 	  private Direction directionFromPressed() {
 	    return switch(isPressed) {
@@ -63,6 +64,7 @@ public class KeyInput implements KeyListener  {
 	      case KeyEvent.VK_LEFT, KeyEvent.VK_Q -> isPressed |= FLAGLEFT;
 	      case KeyEvent.VK_SHIFT -> game.translocator();
 	      case KeyEvent.VK_CONTROL -> cmdisPressed |= FLAGCTRL;
+	      case KeyEvent.VK_ALT -> cmdisPressed |= FLAGALT;
 	      case KeyEvent.VK_SPACE -> game.dash();
 	      case KeyEvent.VK_CAPS_LOCK -> {
 	        capsToggle = ! capsToggle;
@@ -81,6 +83,7 @@ public class KeyInput implements KeyListener  {
 	      case KeyEvent.VK_RIGHT, KeyEvent.VK_D -> isPressed &= ~FLAGRIGHT;
 	      case KeyEvent.VK_DOWN, KeyEvent.VK_S -> isPressed &= ~FLAGDOWN;
 	      case KeyEvent.VK_LEFT, KeyEvent.VK_Q -> isPressed &= ~FLAGLEFT;
+	      case KeyEvent.VK_ALT -> cmdisPressed &= ~FLAGALT;
 	      case KeyEvent.VK_SHIFT -> cmdisPressed &= ~FLAGSHIFT;
 	      case KeyEvent.VK_CONTROL -> cmdisPressed &= ~FLAGCTRL;
 	    }

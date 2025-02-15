@@ -18,15 +18,10 @@ import javax.swing.Timer;
 
 public class SoundPlayer implements LineListener {
 	private static HashMap<SoundEnum, Clip> sounds = new HashMap<>();
-	private static final String dashPath = "sound/dash.wav";
-	private static final String bonkPath = "sound/bonk.wav";
-	private static final String tpPath = "sound/teleport.wav";
-	private static final String miaou1 = "sound/miaou1.wav";
-	private static final String miaou2 = "sound/miaou2.wav";
 	private static final Timer miaouTimer = new Timer(7000, e-> playMiaou());
 	
-	private static void load(String path, SoundEnum name) throws IOException, UnsupportedAudioFileException, LineUnavailableException{
-		InputStream inputStream = new FileInputStream(new File(path));
+	private static void load(SoundEnum name) throws IOException, UnsupportedAudioFileException, LineUnavailableException{
+		InputStream inputStream = new FileInputStream(new File(name.path));
 		inputStream = new BufferedInputStream(inputStream);
 		var audioStream = AudioSystem.getAudioInputStream(inputStream);
 		var audioClip = AudioSystem.getClip();
@@ -36,11 +31,12 @@ public class SoundPlayer implements LineListener {
 	}
 	
 	public static void init() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
-		load(dashPath, SoundEnum.DASH);
-		load(bonkPath, SoundEnum.BONK);
-		load(tpPath, SoundEnum.TELEPORT);
-		load(miaou1, SoundEnum.MIAOU1);
-		load(miaou2, SoundEnum.MIAOU2);
+		load(SoundEnum.DASH);
+		load( SoundEnum.BONK);
+		load(SoundEnum.TELEPORT);
+		load(SoundEnum.MIAOU1);
+		load(SoundEnum.MIAOU2);
+		load(SoundEnum.FIRE);
 		miaouTimer.start();
 	}
 	
@@ -73,6 +69,14 @@ public class SoundPlayer implements LineListener {
             }
             clip.setFramePosition(0); // Rewind to the beginning
             clip.start();
+    	}
+    }
+    
+    public static void stop(SoundEnum sound) {
+    	if (sounds.containsKey(sound)) {
+    		var clip = sounds.get(sound);
+    		clip.stop();
+    		clip.setFramePosition(0);
     	}
     }
 	

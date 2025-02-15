@@ -4,6 +4,7 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 
+import game.io.KeyInput;
 import sound.SoundEnum;
 import sound.SoundPlayer;
 import util.Direction;

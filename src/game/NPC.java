@@ -2,6 +2,7 @@ package game;
 
 import java.awt.Polygon;
 import java.util.ArrayList;
+import java.util.List;
 
 import util.Vector;
 
@@ -12,7 +13,7 @@ public class NPC {
     public static final int WIDTH = 50;
     
 	// npc variables
-    private Vector pos = new Vector(500, 500);
+    private Vector pos = new Vector(100, 600);
     private Vector speed = Vector.NULL;
     private int currentTargetIndex = 0;
     private boolean isMoving = true;
@@ -22,14 +23,14 @@ public class NPC {
 	
 	private long startTime = System.nanoTime();
 	private ArrayList<Vector> targets = new ArrayList<>();
-	private ArrayList<EventEnum> events = new ArrayList<>();
+	private ArrayList<ObjectInteract> events = new ArrayList<>();
 	private Game game;
 	
 	public NPC(Game game) {
 		this.game = game;
 	}
 	
-	public void addTarget(Vector v, EventEnum event) {
+	public void addTarget(Vector v, ObjectInteract event) {
 		targets.add(v);
 		events.add(event);
 	}
@@ -59,7 +60,7 @@ public class NPC {
         if (distance < maxSpeed) {
             System.out.println("NPC reach target : " + targetPos);
             targets.removeLast();
-            if (events.getLast() != EventEnum.NOEV) {
+            if (events.getLast().type != EventEnum.NOEV) {
             	game.event(events.getLast());
             }
             events.removeLast();
@@ -72,6 +73,10 @@ public class NPC {
 	
 	public Vector getPos() {
 		return pos;
+	}
+	
+	public List<Vector> getTargets(){
+		return targets;
 	}
 
 	public Polygon getHitbox() {

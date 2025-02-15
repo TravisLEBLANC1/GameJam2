@@ -4,5 +4,7 @@ public enum EventEnum {
 	NOEV,
 	FISH,
 	MOUSE,
-	TASSE;
+	UNLOCKTASSE,
+	TASSE,
+	FIRE;
 }
