@@ -14,16 +14,11 @@ public class Game {
     private Timer updateTimer = new Timer(TIC, e -> updateCharacters());
 	public Map map = new Map();
 	public Player player = new Player();
-<<<<<<< Updated upstream
-	public Camera cam = new Camera(player);
-    private boolean running = true;
-    
-=======
+
     public NPC npc = new NPC(this);
 	public Camera cam = new Camera(player);
     private boolean running = true;
     
-    CountdownTimer timer = new CountdownTimer(10);
     
     public void initNPC() {
     	npc.addTarget(new Vector(700, 700), EventEnum.NOEV);
@@ -31,7 +26,6 @@ public class Game {
     	npc.addTarget(new Vector(900, 300), EventEnum.NOEV);
     }
     
->>>>>>> Stashed changes
 	public void start() {
 		
 		updateTimer.start();
@@ -88,18 +82,11 @@ public class Game {
 		cam.maj();
 	}
 	
-<<<<<<< Updated upstream
-	public void interaction(Direction dir) {
-		if (map.isPresed(player.getHitbox())) {
-			System.out.println("Implémenter actions");
-		}
-	}
-=======
 	
 	
 	public void event(EventEnum event) {
 		if (!map.event(event)) {
-			System.out.println("lost!");
+			loose();
 		}else {
 			System.out.println("good!");
 		}
@@ -113,5 +100,5 @@ public class Game {
 	public void loose() {
 		System.out.println("You loose !");
 	}
->>>>>>> Stashed changes
+
 }

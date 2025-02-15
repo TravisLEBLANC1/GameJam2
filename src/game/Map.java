@@ -8,11 +8,9 @@ import java.util.List;
 
 public class Map {
 	private ArrayList<Wall> walls = new ArrayList<>();
-<<<<<<< Updated upstream
-  private ArrayList<Rectangle> buttons = new ArrayList<>();
-=======
+
 	private ArrayList<ObjectInteract> buttons = new ArrayList<>();
->>>>>>> Stashed changes
+
   
 	public Map() {
 		// TODO temporary
@@ -23,12 +21,9 @@ public class Map {
 		int[] xpoints = {200, 500, 480, 180};
 		int[] ypoints = {200, 500, 520, 220};
 		walls.add(new Wall(xpoints, ypoints, 4));
-<<<<<<< Updated upstream
-=======
 
 		buttons.add(new ObjectInteract(EventEnum.FISH, new Rectangle (300,400,50,50)));
 
->>>>>>> Stashed changes
 		xpoints = new int[]{1500, 1800, 1780, 1480};
 		ypoints = new int[]{200, 500, 520, 220};
 		walls.add(new Wall(xpoints, ypoints, 4));
