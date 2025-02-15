@@ -7,7 +7,8 @@ import java.util.List;
 
 
 public class Map {
-	private ArrayList<Wall> walls = new ArrayList<>(); 
+	private ArrayList<Wall> walls = new ArrayList<>();
+  private ArrayList<Rectangle> buttons = new ArrayList<>();
 	
 	public Map() {
 		// TODO temporary
@@ -18,6 +19,7 @@ public class Map {
 		int[] xpoints = {200, 500, 480, 180};
 		int[] ypoints = {200, 500, 520, 220};
 		walls.add(new Wall(xpoints, ypoints, 4));
+    buttons.add(new Rectangle (300,400,50,50));
 	}
 	
 	public List<Wall> getWalls(){
@@ -33,5 +35,13 @@ public class Map {
 		}
 		return null;
 //		return walls.stream().anyMatch(w -> w.intersects(hitbox));
+	}
+	
+	public List<Rectangle> getButtons(){
+		return buttons;
+	}
+	
+	public boolean isPresed(Rectangle hitbox) {
+		return buttons.stream().anyMatch(w -> w.intersects(hitbox));
 	}
 }

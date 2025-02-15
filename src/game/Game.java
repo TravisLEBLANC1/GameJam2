@@ -48,5 +48,14 @@ public class Game {
 //				System.out.println(i + " tic");
 			}
 		}
+//		if (map.isPresed(player.getHitbox())) {
+//			System.out.println("Presed");
+//		}
+	}
+	
+	public void interaction(Direction dir) {
+		if (map.isPresed(player.getHitbox())) {
+			System.out.println("Implémenter actions");
+		}
 	}
 }

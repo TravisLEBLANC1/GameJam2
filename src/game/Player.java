@@ -181,4 +181,6 @@ public class Player {
 				(int) (pos.y() +25 - hitboxShift), (int) (pos.y() -25 + hitboxShift)};
 		return new Polygon(xpoints, ypoints, 8);
 	}
+	
+	
 }
