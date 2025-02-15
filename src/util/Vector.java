@@ -1,6 +1,6 @@
 package util;
 
-
+import java.awt.geom.Point2D;
 
 public record Vector(double x, double y) {
   private static final double R2 = 1/Math.sqrt(2); 
@@ -75,6 +75,10 @@ public record Vector(double x, double y) {
 	    return new Vector(x/n, y/n);
 	  }
   
+  public Vector opposite() {
+	  return new Vector(-x, -y);
+  }
+  
   public static Vector add(Vector v1, Vector v2) {
     return new Vector(v1.x() + v2.x(), v1.y() + v2.y());
   }
@@ -90,6 +94,10 @@ public record Vector(double x, double y) {
   
   public Vector times(double lambda) {
     return new Vector(lambda*x, lambda*y);
+  }
+  
+  public Point2D.Double toPoint2d() {
+	  return new Point2D.Double(x,y);
   }
   
   @Override

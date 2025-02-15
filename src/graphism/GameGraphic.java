@@ -2,6 +2,7 @@ package graphism;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.JComponent;
 
@@ -23,6 +24,7 @@ public class GameGraphic extends JComponent {
 	}
 
 	public void paintPlayer(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;  // Cast to Graphics2
 		if (game.player.isDashing()) {
 			g.setColor(Color.RED);
 		}else {
@@ -32,7 +34,7 @@ public class GameGraphic extends JComponent {
 		g.fillOval((int) pos.x()-25,(int) pos.y()-25, 50, 50);
 		g.setColor(Color.BLACK);
 		var rec = game.player.getHitbox();
-		g.drawRect(rec.x, rec.y, rec.width, rec.height);
+		g2d.draw(rec);
 	}
 	
     @Override

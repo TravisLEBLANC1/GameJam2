@@ -3,12 +3,16 @@ package game;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
 import util.Vector;
 
 public class Wall {
+	private final double EPSILON = 0.5;
+	public static final int NOTFOUND = -1;
+	public static final int CORNER = -2;
   private List<Integer> xpoints = null;
   private List<Integer> ypoints = null;
   private Polygon polygon = new Polygon();
@@ -52,23 +56,65 @@ public class Wall {
   
   // Check collision and return the index of the edge it collided with
   public int getCollidingEdge(Player player) {
-	  var box = player.getHitbox();
+	  Point2D  closestPoint = null;
+	  double minDistance = 0;
+	  var p2 = player.getHitbox();
+	  var playerPoint = player.getPos().toPoint2d();
+	  int resultEdge = NOTFOUND;
 	  
-      for (int i = 0; i < nbpoints; i++) {
-          int x1 = xpoints.get(i);
-          int y1 = ypoints.get(i);
-          int x2 = xpoints.get((i+1)%nbpoints);
-          int y2 = ypoints.get((i+1)%nbpoints);
+      for (int i = 0; i < polygon.npoints; i++) {
+          int next1 = (i + 1) % polygon.npoints; // Wrap around to the first point
+          Line2D.Double edge1 = new Line2D.Double(polygon.xpoints[i], polygon.ypoints[i], polygon.xpoints[next1], polygon.ypoints[next1]);
 
-          var edge = new Line2D.Double(x1, y1, x2, y2);
-          
-          // Check if the movement line intersects this edge
-          if (box.intersectsLine(edge)) {
-              return i; // Return the index of the colliding edge
+          for (int j = 0; j < p2.npoints; j++) {
+              int next2 = (j + 1) % p2.npoints;
+              Line2D.Double edge2 = new Line2D.Double(p2.xpoints[j], p2.ypoints[j], p2.xpoints[next2], p2.ypoints[next2]);
+              
+              if (edge1.intersectsLine(edge2)) {
+            	  Point2D point = getIntersection(edge1, edge2);
+            	  if (closestPoint == null) {
+            		  closestPoint = point;
+            		  minDistance = point.distance(playerPoint);
+            		  resultEdge = i;
+            		  break;
+            	  }else {
+            		  double distance = point.distance(playerPoint);
+            		  
+            		  if (Math.abs(distance - minDistance) < EPSILON) {
+            			  System.out.println("btw " + resultEdge + "  " + i  + " " + Math.abs(distance - minDistance));
+            			  resultEdge = CORNER;
+            		  }else if (distance < minDistance) {
+	                      minDistance = distance;
+	                      resultEdge = i;
+		              }
+            		  
+            	  }
+              }
           }
       }
+      
+      return resultEdge;
+  }
+  
+  public static Point2D getIntersection(final Line2D.Double line1, final Line2D.Double line2) {
 
-      return -1; // No collision detected
+      final double x1,y1, x2,y2, x3,y3, x4,y4;
+      x1 = line1.x1; y1 = line1.y1; x2 = line1.x2; y2 = line1.y2;
+      x3 = line2.x1; y3 = line2.y1; x4 = line2.x2; y4 = line2.y2;
+      final double x = (
+              (x2 - x1)*(x3*y4 - x4*y3) - (x4 - x3)*(x1*y2 - x2*y1)
+              ) /
+              (
+              (x1 - x2)*(y3 - y4) - (y1 - y2)*(x3 - x4)
+              );
+      final double y = (
+              (y3 - y4)*(x1*y2 - x2*y1) - (y1 - y2)*(x3*y4 - x4*y3)
+              ) /
+              (
+              (x1 - x2)*(y3 - y4) - (y1 - y2)*(x3 - x4)
+              );
+
+      return new Point2D.Double(x, y);
   }
   
   public Vector getEdgeNormal(int edgeIndex) {
@@ -92,6 +138,26 @@ public class Wall {
   
   public boolean intersects(Rectangle rec) {
     return getPolygon().intersects(rec);
+  }
+
+  public boolean intersects(Polygon p2) {
+      // 1. Quick bounding box check
+      if (!polygon.getBounds2D().intersects(p2.getBounds2D())) {
+          return false;
+      }
+   // 2. Vertex inside check
+      for (int i = 0; i < polygon.npoints; i++) {
+          if (p2.contains(polygon.xpoints[i], polygon.ypoints[i])) {
+              return true;
+          }
+      }
+      for (int i = 0; i < p2.npoints; i++) {
+          if (polygon.contains(p2.xpoints[i], p2.ypoints[i])) {
+              return true;
+          }
+      }
+      // 3 edge check? not necessecary?
+      return false;
   }
   
   public List<Integer> getXpoints() {
