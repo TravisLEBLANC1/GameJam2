@@ -4,6 +4,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 import game.Game;
+import graphism.sprite.SpriteContainer;
 import util.Direction;
 
 public class KeyInput implements KeyListener  {
@@ -60,15 +61,17 @@ public class KeyInput implements KeyListener  {
 	      case KeyEvent.VK_RIGHT, KeyEvent.VK_D ->isPressed |= FLAGRIGHT;
 	      case KeyEvent.VK_DOWN, KeyEvent.VK_S -> isPressed |= FLAGDOWN;
 	      case KeyEvent.VK_LEFT, KeyEvent.VK_Q -> isPressed |= FLAGLEFT;
-	      case KeyEvent.VK_SHIFT -> game.player.translocator();
+	      case KeyEvent.VK_SHIFT -> game.translocator();
 	      case KeyEvent.VK_CONTROL -> cmdisPressed |= FLAGCTRL;
-	      case KeyEvent.VK_SPACE -> game.player.dash();
+	      case KeyEvent.VK_SPACE -> game.dash();
 	      case KeyEvent.VK_CAPS_LOCK -> {
 	        capsToggle = ! capsToggle;
 	      }
 	      case KeyEvent.VK_E -> game.interaction(directionFromPressed());
 	    }
+	    
 	    game.majCharacter(directionFromPressed());
+	    SpriteContainer.changeDirection(directionFromPressed());
 	  }
 
 	  @Override
@@ -82,6 +85,7 @@ public class KeyInput implements KeyListener  {
 	      case KeyEvent.VK_CONTROL -> cmdisPressed &= ~FLAGCTRL;
 	    }
 	    game.majCharacter(directionFromPressed());
+	    SpriteContainer.changeDirection(directionFromPressed());
 	  }
 
 

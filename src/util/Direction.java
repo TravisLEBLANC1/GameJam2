@@ -41,10 +41,10 @@ public enum Direction {
   /* 
    * find the direction that match the better the vector (dx, dy)
    */
-  public static Direction closest(int dx, int dy) {
-    if (dx == 0 && dy == 0) return NULL;
-    if (dx == 0 && dy >0 ) return NORTH;
-    if (dx == 0 && dy <0 ) return SOUTH;
+  public static Direction closest(double dx, double dy) {
+    if (Math.abs(dx) <= 0.001 && Math.abs(dy) <= 0.001) return NULL;
+    if (Math.abs(dx) <= 0.001  && dy < 0 ) return NORTH;
+    if (Math.abs(dx) <= 0.001  && dy > 0 ) return SOUTH;
     // Calculate the angle in radians
     double angle = Math.atan2(dy, dx);
     // Map the angle to one of the 8 directions (each covering π/4 radians)

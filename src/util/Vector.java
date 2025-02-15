@@ -43,6 +43,10 @@ public record Vector(double x, double y) {
     return Math.sqrt(x*x + y*y);
   }
   
+  public double distanceSquare(Vector v) {
+	  return (v.x - x)*(v.x - x) + (v.y - y)*(v.y - y);
+  }
+  
   public Vector normalized(double norm) {
     var n = norme();
     if(Math.abs(x) < EPSILON && Math.abs(y) < EPSILON)
