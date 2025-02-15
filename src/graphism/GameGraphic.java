@@ -8,6 +8,7 @@ import java.awt.Polygon;
 import javax.swing.JComponent;
 
 import game.Game;
+import game.NPC;
 import game.Player;
 import graphism.sprite.SpriteContainer;
 import util.Vector;
@@ -77,12 +78,26 @@ public class GameGraphic extends JComponent {
 //		g2d.draw(rec);
 	}
 	
+	public void paintNPC(Graphics g) {
+		Graphics2D g2d = (Graphics2D) g;  // Cast to Graphics2
+		g.setColor(Color.YELLOW);
+		var pos = game.npc.getPos();
+		g.fillOval((int) pos.x()- NPC.WIDTH/2,(int) pos.y()-NPC.WIDTH/2, NPC.WIDTH, NPC.WIDTH);
+		g.setColor(Color.BLACK);
+		var rec = game.npc.getHitbox();
+		g2d.draw(rec);
+	}
+	
     @Override
     protected void paintComponent(Graphics g) {
        super.paintComponent(g);
        calculateUpperLeft();
        paintWalls(g);
        paintButtons(g);
+
+       paintNPC(g);
+
        paintPlayer(g);
+
     }
 }
