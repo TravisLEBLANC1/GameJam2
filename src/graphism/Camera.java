@@ -10,7 +10,7 @@ public class Camera {
 	private Vector cameraShiftTeleport;
 	private boolean teleporting;
 	private final int TELEPORTSPEED = 30;
-	private final double EPSILON = TELEPORTSPEED*2;
+	private final double EPSILON = TELEPORTSPEED*4;
 	public Camera(Player player) {
 		this.player = player;
 	}

@@ -1,8 +1,15 @@
 package main;
 
+import java.io.IOException;
+
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import game.Game;
 import game.io.KeyInput;
 import graphism.MainGraphic;
+import sound.SoundEnum;
+import sound.SoundPlayer;
 
 public class Main {
 
@@ -15,8 +22,20 @@ public class Main {
 		var input = new KeyInput(game);
 		graphic.inputUser(input);
 		game.start();
+		try {
+			SoundPlayer.init();
+			SoundPlayer.setVolume(0.7);
+		} catch (IOException e) {
+			System.err.println(e);
+		} catch (UnsupportedAudioFileException e) {
+			System.err.println(e);
+		} catch (LineUnavailableException e) {
+			System.err.println(e);
+		}
+		;
 		graphic.run();
-		
+
+	
 //		double hitboxShift = 12;
 //		var player = new Player();
 //		var pos = new Vector(49.442, 149.482);

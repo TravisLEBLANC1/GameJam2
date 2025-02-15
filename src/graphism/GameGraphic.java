@@ -15,6 +15,7 @@ import util.Vector;
 public class GameGraphic extends JComponent {
 	private static final int xshiftImage = 13;
 	private static final int yshiftImage = 15;
+	private static final Color playerColor = new Color(213, 246, 251, 200);
 	private Game game;
 
 	private Vector upperLeft;
@@ -63,7 +64,7 @@ public class GameGraphic extends JComponent {
 		}
 		
 		if (game.player.isTranslocator()) {
-			g.setColor(Color.MAGENTA);
+			g.setColor(playerColor);
 			
 			var tPos = game.player.getTranslocatorPos();
 			var tTime = game.player.getTranslocatorTime();

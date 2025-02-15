@@ -4,6 +4,8 @@ import javax.swing.Timer;
 
 import graphism.Camera;
 import graphism.sprite.SpriteContainer;
+import sound.SoundEnum;
+import sound.SoundPlayer;
 import util.Direction;
 
 public class Game {
@@ -29,6 +31,7 @@ public class Game {
 	public void dash() {
 		if (player.dash()) {
 			SpriteContainer.dash(player.getDir());
+			SoundPlayer.play(SoundEnum.DASH);
 		}
 	}
 	
@@ -47,6 +50,7 @@ public class Game {
 				// should not happen
 //				System.out.println("hmmm...");
 			}else {
+				var bonkdir = Direction.closest(player.getSpeed().x(), player.getSpeed().y());
 				if (edge == Wall.CORNER){
 					player.bounceOpposite();
 					// System.out.println("corner");
@@ -56,7 +60,8 @@ public class Game {
 					
 				}
 				player.teleport(old);
-				SpriteContainer.bonk(player.getDir());
+				SpriteContainer.bonk(bonkdir);
+				SoundPlayer.play(SoundEnum.BONK);
 			}
 		}
 //		if (map.isPresed(player.getHitbox())) {

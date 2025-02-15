@@ -4,6 +4,8 @@ import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 
+import sound.SoundEnum;
+import sound.SoundPlayer;
 import util.Direction;
 import util.Vector;
 
@@ -22,8 +24,8 @@ public class Player {
 	private final double dashSpeedMultiplicator = 2.5;
 	private final double hitboxShift = 12;
 	
-	public static final int WIDTH = 44;
-	public static final int HEIGHT = 30;
+	public static final int WIDTH = 34;
+	public static final int HEIGHT = 24;
 	
 	// player variables
 	private Direction dir = Direction.NULL;
@@ -103,6 +105,7 @@ public class Player {
 		if (translocatorPos != null && !isTranslocator()) {
 			pos = translocatorPos;
 			translocatorPos = null;
+			SoundPlayer.play(SoundEnum.TELEPORT);
 		}
 	}
 	
