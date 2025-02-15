@@ -7,8 +7,9 @@ import java.util.List;
 
 
 public class Map {
-	private ArrayList<Wall> walls = new ArrayList<>(); 
-	private ArrayList<Rectangle> buttons = new ArrayList<>();
+	private ArrayList<Wall> walls = new ArrayList<>();
+  private ArrayList<Rectangle> buttons = new ArrayList<>();
+  
 	public Map() {
 		// TODO temporary
 		walls.add(new Wall(new Rectangle(50,50, 900,20)));
@@ -18,12 +19,7 @@ public class Map {
 		int[] xpoints = {200, 500, 480, 180};
 		int[] ypoints = {200, 500, 520, 220};
 		walls.add(new Wall(xpoints, ypoints, 4));
-    buttons.add(new Rectangle (70,70,50,50));
-		buttons.add(new Rectangle (150,150,50,50));
-		buttons.add(new Rectangle (200,200,50,50));
-		buttons.add(new Rectangle (300,400,50,50));
-		buttons.add(new Rectangle (500,500,50,50));
-
+    buttons.add(new Rectangle (300,400,50,50));
 	}
 	
 	public List<Wall> getWalls(){
