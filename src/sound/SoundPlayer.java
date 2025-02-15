@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 
-import javax.sound.sampled.AudioFormat;
-import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.sound.sampled.FloatControl;
@@ -16,12 +14,16 @@ import javax.sound.sampled.LineEvent;
 import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
+import javax.swing.Timer;
 
 public class SoundPlayer implements LineListener {
 	private static HashMap<SoundEnum, Clip> sounds = new HashMap<>();
 	private static final String dashPath = "sound/dash.wav";
 	private static final String bonkPath = "sound/bonk.wav";
 	private static final String tpPath = "sound/teleport.wav";
+	private static final String miaou1 = "sound/miaou1.wav";
+	private static final String miaou2 = "sound/miaou2.wav";
+	private static final Timer miaouTimer = new Timer(7000, e-> playMiaou());
 	
 	private static void load(String path, SoundEnum name) throws IOException, UnsupportedAudioFileException, LineUnavailableException{
 		InputStream inputStream = new FileInputStream(new File(path));
@@ -37,6 +39,9 @@ public class SoundPlayer implements LineListener {
 		load(dashPath, SoundEnum.DASH);
 		load(bonkPath, SoundEnum.BONK);
 		load(tpPath, SoundEnum.TELEPORT);
+		load(miaou1, SoundEnum.MIAOU1);
+		load(miaou2, SoundEnum.MIAOU2);
+		miaouTimer.start();
 	}
 	
     public static void setVolume(double volume) {
@@ -50,7 +55,15 @@ public class SoundPlayer implements LineListener {
     	}
     }
     
-    
+    public static void playMiaou() {
+    	if(Math.random() <= 0.7) {
+    		if(Math.random() <= 0.5) {
+    			play(SoundEnum.MIAOU1);
+    		}else {
+    			play(SoundEnum.MIAOU2);
+    		}
+    	}
+    }
 	
     public static void play(SoundEnum sound) {
     	if (sounds.containsKey(sound)) {
@@ -58,7 +71,6 @@ public class SoundPlayer implements LineListener {
             if (clip.isRunning()) {
                 clip.stop();
             }
-            System.out.println(clip);
             clip.setFramePosition(0); // Rewind to the beginning
             clip.start();
     	}
@@ -68,6 +80,7 @@ public class SoundPlayer implements LineListener {
 		for (var clip : sounds.values()) {
 			clip.close();
 		}
+		miaouTimer.stop();
 
 	}
 	

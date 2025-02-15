@@ -3,5 +3,7 @@ package sound;
 public enum SoundEnum {
 	DASH,
 	BONK,
-	TELEPORT;
+	TELEPORT,
+	MIAOU1,
+	MIAOU2;
 }
