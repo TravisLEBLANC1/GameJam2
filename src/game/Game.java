@@ -13,8 +13,11 @@ public class Game {
     private Timer updateTimer = new Timer(TIC, e -> updateCharacters());
 	public Map map = new Map();
 	public Player player = new Player();
+  public NPC npc = new NPC();
 	public Camera cam = new Camera(player);
     private boolean running = true;
+    
+    CountdownTimer timer = new CountdownTimer(10);
     
 	public void start() {
 		updateTimer.start();
@@ -42,6 +45,8 @@ public class Game {
 	private void updateCharacters() {
 		var old = player.getPos();
 		player.move();
+		npc.move();
+		
 		var wall = map.touchWall(player);
 		if (wall != null) {
 			
@@ -72,7 +77,13 @@ public class Game {
 	
 	public void interaction(Direction dir) {
 		if (map.isPresed(player.getHitbox())) {
+			npc.skip();
+			timer.start();
 			System.out.println("Implémenter actions");
 		}
+	}
+	
+	public void loose() {
+		System.out.println("You loose !");
 	}
 }
