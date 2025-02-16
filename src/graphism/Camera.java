@@ -24,7 +24,6 @@ public class Camera {
 	}
 	
 	public void fix(Vector pos) {
-		System.out.println(pos);
 		camPos = Vector.sub(pos, cameraShift);
 		fixed = true;
 		timerFix.start();

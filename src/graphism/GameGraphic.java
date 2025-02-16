@@ -79,7 +79,12 @@ public class GameGraphic extends JPanel {
         g2d.drawString(message, x, y);
         
         // Create restart button
-        JButton restartButton = new JButton("Restart");
+        JButton restartButton;
+        if (state == 3) {
+        	restartButton = new JButton("Restart");
+        }else {
+        	restartButton = new JButton("Next Map");
+        }
         restartButton.setBounds(getWidth() / 2 - 50, getHeight() / 2, 100, 40);
         restartButton.addActionListener(new ActionListener() {
             @Override

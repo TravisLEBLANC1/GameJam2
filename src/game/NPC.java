@@ -77,10 +77,8 @@ public class NPC {
         pos = Vector.add(pos, speed.times(elapsedTime/(double) 16));
 		
         if (distance < currentSpeed) {
-            System.out.println("NPC reach target : " + targetPos);
             targets.removeLast();
             currentSpeed = speeds.removeLast();
-            System.out.println(targets.size());
             var last = events.removeLast();
             if (last.getType() != EventEnum.NOEV) {
             	game.event(last);

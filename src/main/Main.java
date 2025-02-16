@@ -16,6 +16,8 @@ public class Main {
 	private static Game game;
 	private static MainGraphic graphic;
 	private static Thread updates;
+	private static int nbMap = 0;
+	
 	public static void restartGame() {
 		if (graphic != null) {
 			updates.interrupt();
@@ -23,9 +25,12 @@ public class Main {
 			graphic.dispose();
 		}
 		if (game != null) {
+			if (game.isWon()) {
+				nbMap = 1; // (nbMap + 1) %4;
+			}
 			game.stop();
 		}
-		game = new Game();
+		game = new Game(nbMap);
 		graphic = new MainGraphic();
 
 
@@ -39,11 +44,9 @@ public class Main {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println("hello");
-
 		try {
 			SoundPlayer.init();
-			SoundPlayer.setVolume(0.7);
+			SoundPlayer.setVolume(0.8);
 		} catch (IOException e) {
 			System.err.println(e);
 		} catch (UnsupportedAudioFileException e) {
