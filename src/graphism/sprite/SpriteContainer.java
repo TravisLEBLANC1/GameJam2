@@ -2,6 +2,8 @@ package graphism.sprite;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -49,6 +51,16 @@ public class SpriteContainer {
 		        build();
 	}
 	
+	private static SpriteSheet build(BufferedImage sheet, int width, int height, int nb) {
+		return new SpriteSheetBuilder().
+		        withSheet(sheet).
+		        withColumns(1).
+		        withRows(nb).
+		        withSpriteSize(width, height).
+		        withSpriteCount(nb).
+		        build();
+	}
+	
 	public static BufferedImage resize(BufferedImage img, int newW, int newH) { 
 	    Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
 	    BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
@@ -59,6 +71,16 @@ public class SpriteContainer {
 
 	    return dimg;
 	}  
+	
+	private static BufferedImage scale(BufferedImage img, int dx, int dy) {
+		int w = img.getWidth()*dx;
+		int h = img.getHeight()*dy;
+		BufferedImage after = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+		AffineTransform scalingTransform = new AffineTransform();
+		scalingTransform.scale(dx, dy);
+		AffineTransformOp scaleOp = new AffineTransformOp(scalingTransform, AffineTransformOp.TYPE_BILINEAR);
+		return scaleOp.filter(img, after);
+	}
 	
     public static void loadImages(String directoryPath) throws IOException {
         HashMap<String, BufferedImage> imageMap = new HashMap<>();
@@ -74,7 +96,7 @@ public class SpriteContainer {
             for (File file : files) {
                 BufferedImage image = ImageIO.read(file);
                 if (image != null) {
-                	images.put(file.getName(), resize(image, ObjectInteract.WIDTH/2, ObjectInteract.HEIGHT/2));
+                	images.put(file.getName(), scale(image, 2,2));
                 } else {
                     System.err.println("Failed to load image: " + file.getName());
                 }
@@ -110,6 +132,12 @@ public class SpriteContainer {
 		sheet = ImageIO.read(new File("animations/Dash_Left-Sheet.png"));
 		dashleft = build(sheet, 3);
 		
+		sheet =ImageIO.read(new File("animations/Window-Sheet.png"));
+		var windowsheet = build(sheet, 49, 70 ,5);
+		for (int i =0; i < 5; i++) {
+			images.put("window" + i, scale(windowsheet.getSprite(),2 , 2));
+			windowsheet.next();
+		}
 		
 		loadImages("images");
 		current = up;

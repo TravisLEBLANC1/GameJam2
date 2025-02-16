@@ -17,6 +17,7 @@ public class NPC {
 	// npc variables
     private Vector pos = new Vector(100, 600);
     private Vector speed = Vector.NULL;
+    private double currentSpeed = 2.0;
     private int currentTargetIndex = 0;
     private boolean isMoving = true;
     
@@ -25,6 +26,7 @@ public class NPC {
 	
 	private long startTime = System.nanoTime();
 	private ArrayList<Vector> targets = new ArrayList<>();
+	private ArrayList<Double> speeds = new ArrayList<>();
 	private ArrayList<Button> events = new ArrayList<>();
 	private Game game;
 	
@@ -32,9 +34,18 @@ public class NPC {
 		this.game = game;
 	}
 	
+	public void addTarget(Vector v, double s, Button event) {
+		targets.add(v);
+		speeds.add(Double.valueOf(s));
+		events.add(event);
+		
+	}
+	
 	public void addTarget(Vector v, Button event) {
 		targets.add(v);
+		speeds.add(Double.valueOf(2.0));
 		events.add(event);
+		
 	}
 	
 	public void move() {
@@ -51,21 +62,22 @@ public class NPC {
         Vector direction = Vector.sub(targetPos, pos);
         double distance = direction.norme();
 
-        if (distance > maxSpeed) {
-            speed = direction.normalized(maxSpeed);
+        if (distance > currentSpeed) {
+            speed = direction.normalized(currentSpeed);
         } else {
             speed = direction;
         }
 	    
         pos = Vector.add(pos, speed.times(elapsedTime/(double) 16));
 		
-        if (distance < maxSpeed) {
+        if (distance < currentSpeed) {
             System.out.println("NPC reach target : " + targetPos);
             targets.removeLast();
-            if (events.getLast().getType() != EventEnum.NOEV) {
-            	game.event(events.getLast());
+            currentSpeed = speeds.removeLast();
+            var last = events.removeLast();
+            if (last.getType() != EventEnum.NOEV) {
+            	game.event(last);
             }
-            events.removeLast();
         }        
 	}
 	

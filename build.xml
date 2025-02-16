@@ -1,0 +1,70 @@
+<project name="Best-DND" default="clientjar" basedir=".">
+  <property name="src" location="src"/>
+  <property name="lib" location="lib"/>
+  <property name="class" location="classes"/>
+  <property name="javadoc" location="docs/api"/>
+  <property name="zipname" location="Brunel_Leblanc_TheBigAdventure.zip"/>
+  <property name="tmpzip" location="TmpZip/Brunel_Leblanc_TheBigAdventure"/>
+  <property name="clientjar" location="speed-ghost.jar" />
+  <property name="images" location="images/" />
+
+  <target name="init">
+    <mkdir dir="${class}"/>
+    <delete dir="${clientjar}"/>
+  </target>
+
+  <target name="compile" depends="init" description="compile the source into ${class}">
+    <javac srcdir="${src}" includeantruntime="false" destdir="${class}">
+    </javac>
+  </target>
+
+  <target name="clientjar" depends="compile" description="create the .jar of the client">
+    <jar jarfile="${clientjar}" basedir="${class}">
+     <manifest>
+       <attribute name="Built-By" value="Travis"/>
+       <attribute name="Main-Class" value="main.Main" />
+     </manifest>
+    </jar>
+  </target>
+  
+  <target name="clean" description="clean up">
+    <delete includeemptydirs="true">
+     <fileset dir="${class}" includes="**/*"/>
+    </delete>
+    <delete file="${zipname}"/>
+  </target>
+	
+  <target name="fullclean" depends="clean" description="full clean up">
+	<delete includeemptydirs="true">
+     <fileset dir="${javadoc}" includes="**/*"/>
+	</delete>
+	<delete file="${jar}"/>
+  </target>
+
+  <target name="distrib" depends="clientjar,clean" description="create the .zip">
+    <mkdir dir="${tmpzip}"/>
+    <copy todir="${tmpzip}/src">
+      <fileset dir="src"/>
+    </copy>
+    <copy todir="${tmpzip}/classes">
+      <fileset dir="classes"/>
+    </copy>
+    <copy todir="${tmpzip}/lib">
+      <fileset dir="lib"/>
+    </copy>
+    <copy todir="${tmpzip}/docs">
+      <fileset dir="docs"/>
+    </copy>
+    <copy todir="${tmpzip}/maps">
+      <fileset dir="maps"/>
+    </copy>
+    <copy todir="${tmpzip}">
+      <fileset file="build.xml"/>
+    </copy>
+  	<copy todir="${tmpzip}">
+  		<fileset file="${jar}"/>
+  	</copy>
+    <zip destfile="${zipname}" basedir="TmpZip" excludes="**/.**"/>
+    <delete dir="TmpZip"/>
+  </target>
+</project>

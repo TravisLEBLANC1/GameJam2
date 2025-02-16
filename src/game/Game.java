@@ -9,8 +9,10 @@ import javax.swing.Timer;
 import game.objects.Button;
 import game.objects.ObjectFire;
 import game.objects.ObjectInteract;
+import game.objects.ObjectMirror;
 import game.objects.ObjectMusic;
 import game.objects.ObjectUnlock;
+import game.objects.ObjectWindow;
 import graphism.Camera;
 import graphism.GameGraphic;
 import graphism.sprite.SpriteContainer;
@@ -31,13 +33,38 @@ public class Game {
     
     
     public void initNPC() {
+    	Vector pos;
+    	ObjectInteract but1, but2;
+    	
     	// buttons objects
-    	var pos = new Vector(2000, 450);
-    	var but1 = new ObjectInteract(EventEnum.FISH, pos, "Fish_Tank.png");
+    	pos = new Vector(2400, 500);
+    	but1 = new ObjectInteract(EventEnum.FISH, pos, "Fish_Tank.png");
     	map.addButton(but1);
     	npc.addTarget(pos, but1);
     	
-    	npc.addTarget(new Vector(1500, 700), ObjectInteract.empty());
+    	
+    	pos = new Vector(2000, 50);
+    	var butWindow = new ObjectWindow(pos, "window", 5);
+    	map.addButton(butWindow);
+    	
+    	pos = new Vector(2100, 100);
+    	npc.addTarget(pos, butWindow);
+    	
+    	pos = new Vector(2000, 600);
+    	var butMiror = new ObjectMirror(pos, new Vector(2000, 200), "Mirror.png", 2);
+    	map.addButton(butMiror);
+    	
+    	pos = new Vector(1902, 100);
+    	npc.addTarget(pos, butMiror);
+    	pos = new Vector(1900, 100);
+    	npc.addTarget(pos, butWindow);
+
+
+    	
+    	pos = new Vector(1500, 700);
+    	var unlockMirror = new ObjectUnlock(butMiror);
+    	npc.addTarget(pos, unlockMirror);
+    	
     	
     	pos = new Vector(1110, 700);
     	but1 = new ObjectInteract(EventEnum.TASSE, pos, "Mug.png");
@@ -45,28 +72,30 @@ public class Game {
     	npc.addTarget(pos, but1);
     	
     	pos = new Vector(950, 700);
-    	var but2 = new ObjectUnlock(but1);
-    	npc.addTarget(pos, but2);
+    	var unlockMug = new ObjectUnlock(but1);
+    	npc.addTarget(pos, unlockMug);
     	npc.addTarget(new Vector(400, 600), ObjectInteract.empty());
     	
     	pos = new Vector(350, 450);
-    	but1 = new ObjectInteract(EventEnum.WOOL, pos, "Wool_Ball.png");
-    	map.addButton(but1);
-    	npc.addTarget(pos, but1);
+    	var butWool = new ObjectInteract(EventEnum.WOOL, pos, "Wool_Ball.png");
+    	map.addButton(butWool);
+    	npc.addTarget(pos, butWool);
     	
-    	npc.addTarget(new Vector(100, 200), ObjectInteract.empty());
-    	
+    	npc.addTarget(new Vector(100, 200), 1.0, ObjectInteract.empty());
+//    	
 
     	
     	
     	// timer objets
-    	var but3 = new ObjectFire(new Vector(650, 150), this);
-    	timerObjects.add(but3);
-    	map.addButton(but3);
+    	var but4 = new ObjectFire(new Vector(650, 150), this);
+    	timerObjects.add(but4);
+    	map.addButton(but4);
     	
     	// music objects
-    	var but4 = new ObjectMusic(new Rectangle(50, 650, 100, 100));
-    	map.addButton(but4);
+    	var but5 = new ObjectMusic(new Rectangle(50, 650, 100, 100));
+    	map.addButton(but5);
+    	
+    	map.setNPC(npc);
     }
     
 	public void start() {

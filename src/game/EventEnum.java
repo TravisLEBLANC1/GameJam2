@@ -8,5 +8,7 @@ public enum EventEnum {
 	MOUSE,
 	UNLOCK,
 	TASSE,
-	FIRE;
+	FIRE,
+	WINDOW,
+	MIRROR;
 }

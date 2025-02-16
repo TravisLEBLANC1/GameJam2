@@ -14,7 +14,7 @@ public class Map {
 	private ArrayList<Wall> walls = new ArrayList<>();
 
 	private ArrayList<Button> buttons = new ArrayList<>();
-
+	private NPC npc;
   
 	public Map() {
 		// TODO temporary
@@ -31,7 +31,7 @@ public class Map {
 		walls.add(new Wall(xpoints, ypoints, 4));
 		
 		walls.add(new Wall(new Rectangle(900,200, 40, 400)));
-		walls.add(new Wall(new Rectangle(2000,200, 40, 400)));
+		walls.add(new Wall(new Rectangle(2200,200, 40, 400)));
 		
 		
 		walls.add(new Wall(new Rectangle(2800,50, 30,100)));
@@ -39,6 +39,10 @@ public class Map {
 
 //		walls.add(new Wall(new Rectangle(50,50, 20, 700)));
 //		walls.add(new Wall(new Rectangle(50,50, 20, 700)));
+	}
+	
+	public void setNPC(NPC npc) {
+		this.npc = npc;
 	}
 	
 	public void addButton(Button but) {
@@ -61,8 +65,9 @@ public class Map {
 	public boolean event(Button event) {
 		return switch(event.getType()) {
 		case NOEV -> true;
-		case FISH,WOOL,MOUSE -> basicCheck(event);
+		case FISH,WOOL,MOUSE, WINDOW -> basicCheck(event);
 		case UNLOCK -> event.unlockNext();
+		case MIRROR -> event.addTarget(npc);
 		case TASSE -> basicCheck(event);
 		default -> {
 			System.out.println("event " + event.getType() + " inconnu");

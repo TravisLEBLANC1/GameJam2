@@ -6,8 +6,8 @@ import java.awt.Rectangle;
 import game.EventEnum;
 
 public class ObjectUnlock implements Button {
-	private ObjectInteract toUnlock;
-	public ObjectUnlock(ObjectInteract toUnlock) {
+	private Button toUnlock;
+	public ObjectUnlock(Button toUnlock) {
 		this.toUnlock = toUnlock;
 	}
 	

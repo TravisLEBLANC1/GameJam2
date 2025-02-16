@@ -94,12 +94,14 @@ public class GameGraphic extends JPanel {
 	    var buttons = game.map.getButtons();
 	    for (var b : buttons) {
 	    	var button = b.getRect();
-	      if (b.isValid()) {
-	    	  g.setColor(Color.GREEN);
-	      }else {
-	    	  g.setColor(Color.BLACK);
+	      if (b.reflect() != null) {
+	    	  var v = b.reflect();
+	    	  g.setColor(PLAYERCOLOR);
+	    	  
+	    	  g.fillArc((int)(v.x()-upperLeft.x()), (int) (v.y()-upperLeft.y()), 20, 20, 0, 360);
+	    	  
 	      }
-	      // g.fillRect((int)(button.x-upperLeft.x()), (int)(button.y-upperLeft.y()), button.width, button.height);
+	    	
 	      if (b.getImg() != null && SpriteContainer.getImage(b.getImg()) != null) {
 	    	  var img = SpriteContainer.getImage(b.getImg());
 	    	  g.drawImage(img, (int)(button.x + button.width/4 -upperLeft.x()), (int)(button.y + button.height/4-upperLeft.y()), null);
@@ -153,7 +155,7 @@ public class GameGraphic extends JPanel {
 		g.setColor(Color.MAGENTA);
 		for (var target : game.npc.getTargets()){
 			
-			//g.fillOval((int)( target.x()- 4 -upperLeft.x()),(int) (target.y()-4-upperLeft.y()), 8, 8);
+			g.fillOval((int)( target.x()- 4 -upperLeft.x()),(int) (target.y()-4-upperLeft.y()), 8, 8);
 		}
 	}
 	
