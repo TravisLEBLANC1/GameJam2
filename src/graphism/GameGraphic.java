@@ -106,9 +106,12 @@ public class GameGraphic extends JPanel {
 	}
 
 	public void paintButtons(Graphics g) {
+		
 	    var buttons = game.map.getButtons();
 	    for (var b : buttons) {
 	    	var button = b.getRect();
+            var r = b.getRect();
+            g.drawRect((int) (r.x-upperLeft.x()), (int)(r.y-upperLeft.y()), r.width, r.height);
 	      if (b.reflect() != null) {
 	    	  var v = b.reflect();
 	    	  g.setColor(PLAYERCOLOR);
