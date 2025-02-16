@@ -47,7 +47,7 @@ public class ObjectInteract implements Button{
 	}
 	
 	public Rectangle getRect() {
-		if (type == EventEnum.WOOL) {
+		if (type == EventEnum.WOOL || type == EventEnum.TASSE) {
 			if (isMoving && nbMove < 50) {
 				if (state == 1) {
 					r.x -= 1;
@@ -75,11 +75,12 @@ public class ObjectInteract implements Button{
 	}
 	
 	public void interact() {
-		if (!blocked) 
-			state = (state + 1) % maxstate;
-		if (type == EventEnum.WOOL) {
+		if (blocked)  return;
+		state = (state + 1) % maxstate;
+		if (type == EventEnum.WOOL || type == EventEnum.TASSE ) {
 			isMoving = true;
 		}
+		
 	}
 	
 	public boolean isValid() {

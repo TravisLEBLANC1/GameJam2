@@ -40,7 +40,7 @@ public class SpriteContainer {
 	private static Timer updateTimer = new Timer(300, e -> nextFrame());
 	private static Timer bonkUpdateTimer = new Timer(100, e -> nextFrameBonk());
 	private static Timer dashUpdateTimer = new Timer(200, e -> nextFrameDash());
-	
+	// 49 x 70
 	private static SpriteSheet build(BufferedImage sheet, int nb) {
 		return new SpriteSheetBuilder().
 		        withSheet(sheet).
@@ -143,6 +143,12 @@ public class SpriteContainer {
 		catright = build(sheet,30, 33, 12);
 		catright.scaleAll(2,2);
 		catright.loop();
+		
+		sheet =ImageIO.read(new File("animations/Closet-Sheet.png"));
+		var closetSheet = build(sheet, 49, 70, 2);
+		images.put("closet"+0, scale(closetSheet.getSprite(),2 , 2));
+		closetSheet.next();
+		images.put("closet"+1, scale(closetSheet.getSprite(),2 , 2));
 		
 		
 		loadImages("images");

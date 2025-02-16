@@ -56,7 +56,7 @@ public class GameGraphic extends JPanel {
 	  }
 	  
 	  private void addGameOverlayTouches(Graphics g) {
-		 g.setColor(INTERACTCOLOR);
+		 g.setColor(WALLCOLOR);
 		 g.drawString("ZQSD to move", 700, 450);
 		 g.drawString("E to interact", 700, 500);
 		 g.drawString("Space to dash", 700, 550);
@@ -212,7 +212,7 @@ public class GameGraphic extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
        super.paintComponent(g);
-       g.setFont(new Font("TimesRoman", Font.PLAIN, 15)); 
+       g.setFont(new Font("TimesRoman", Font.PLAIN, 20)); 
        calculateUpperLeft();
        paintBackGround(g);
        paintWalls(g);

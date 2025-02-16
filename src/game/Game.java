@@ -129,6 +129,7 @@ public class Game {
 		timerObjects.forEach(b -> b.stop());
 		timerObjects.clear();
 		SoundPlayer.stop(SoundEnum.PRRR);
+		SoundPlayer.stop(SoundEnum.FIRE);
 	}
 	
 	public void stopFire() {
@@ -194,7 +195,6 @@ public class Game {
 				}else {
 					var normal = wall.getEdgeNormal(edge);
 					player.bounce(normal);
-					
 				}
 				player.teleport(old);
 				SpriteContainer.bonk(bonkdir);
