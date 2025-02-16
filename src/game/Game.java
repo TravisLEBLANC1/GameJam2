@@ -82,6 +82,10 @@ public class Game {
     	var but5 = new ObjectMusic(new Rectangle(1700, 650, 100, 100));
     	map.addButton(but5);
     	
+    	pos = new Vector(1400, 50);
+    	butWindow = new ObjectWindow(pos, "window", 1);
+    	map.addButton(butWindow);
+    	
     	// fire objects
     	var but4 = new ObjectFire(new Vector(1500, 120), this);
     	timerObjects.add(but4);
@@ -123,8 +127,12 @@ public class Game {
     	var but5 = new ObjectMusic(new Rectangle(500, 650, 100, 100));
     	map.addButton(but5);
     	
+    	pos = new Vector(100, 50);
+    	butWindow = new ObjectWindow(pos, "window", 1);
+    	map.addButton(butWindow);
+    	
     	// fire objects
-    	var but4 = new ObjectFire(new Vector(120, 700), this);
+    	var but4 = new ObjectFire(new Vector(200, 120), this);
     	timerObjects.add(but4);
     	map.addButton(but4);
     }
@@ -134,10 +142,6 @@ public class Game {
     	ObjectInteract but1, but2;
     	
     	// buttons objects
-
-    	
-
-    	
     	pos = new Vector(2000, 600);
     	var butMiror = new ObjectMirror(pos, new Vector(2000, 200), "Mirror.png", 2);
     	map.addButton(butMiror);
@@ -167,8 +171,12 @@ public class Game {
     	var but5 = new ObjectMusic(new Rectangle(200, 70, 100, 100));
     	map.addButton(but5);
     	
+    	pos = new Vector(2600, 50);
+    	butWindow = new ObjectWindow(pos, "window", 1);
+    	map.addButton(butWindow);
+    	
     	// fire objects
-    	var but4 = new ObjectFire(new Vector(3000, 700), this);
+    	var but4 = new ObjectFire(new Vector(2700, 120), this);
     	timerObjects.add(but4);
     	map.addButton(but4);
     }
@@ -206,6 +214,10 @@ public class Game {
     	// music objects
     	var but5 = new ObjectMusic(new Rectangle(800, 650, 100, 100));
     	map.addButton(but5);
+    	
+    	pos = new Vector(220, 50);
+    	butWindow = new ObjectWindow(pos, "window", 1);
+    	map.addButton(butWindow);
     	
     	// fire objects
     	var but4 = new ObjectFire(new Vector(120, 120), this);
