@@ -149,6 +149,9 @@ public class GameGraphic extends JPanel {
 
 		}else {
 			g.drawImage(img, (int) (pos.x() -upperLeft.x() - Player.WIDTH/2 -xshiftImage ), (int) (pos.y() -upperLeft.y()-Player.HEIGHT/2 -yshiftImage), null);
+			if (game.player.hasLid()) {
+				g.drawImage(SpriteContainer.getImage("Bin_Lid.png"), (int) (pos.x() -upperLeft.x() -xshiftImage -5), (int) (pos.y() -upperLeft.y() -yshiftImage), null);
+			}
 		}
 		
 		if (game.player.isTranslocator()) {
@@ -159,6 +162,8 @@ public class GameGraphic extends JPanel {
 			
 			g2d.fillArc((int) (tPos.x()- Player.WIDTH/2 -upperLeft.x()), (int) (tPos.y() -Player.HEIGHT/2 -upperLeft.y()),  Player.WIDTH, Player.HEIGHT, 90, tTime);
 		}
+		
+		
 //		g.setColor(Color.BLACK);
 //		var rec = game.player.getHitbox();
 //		rec.translate((int) -upperLeft.x(), (int) -upperLeft.y());
@@ -210,6 +215,7 @@ public class GameGraphic extends JPanel {
 			return "oh no... there is no treats in the bowl, you monster!";
 		}
 		return "the cat got distracted by" +  switch(e) {
+		case TRASH -> " the trash bin";
 		case FISH -> " a fish";
 		case WOOL -> " a Wool";
 		case MOUSE -> " a Mouse";

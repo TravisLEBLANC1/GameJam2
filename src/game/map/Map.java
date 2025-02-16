@@ -61,14 +61,10 @@ public class Map {
 	public boolean event(Button event) {
 		return switch(event.getType()) {
 		case NOEV -> true;
-		case FISH,WOOL,MOUSE, WINDOW,TREATBOWL  -> basicCheck(event);
 		case UNLOCK -> event.unlockNext();
 		case MIRROR -> event.addTarget(game.npc);
 		case TASSE -> basicCheck(event);
-		default -> {
-			System.out.println("event " + event.getType() + " inconnu");
-			yield false;
-			}
+		default -> basicCheck(event);
 		};
 	}
 	

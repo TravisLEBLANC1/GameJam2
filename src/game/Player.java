@@ -41,6 +41,7 @@ public class Player {
 	private long transloBeginTime = 0;
 	private long stunedBeginTime = 0;
 	private boolean isStuned = false;
+	private boolean hasLid = false;
 	private int nbtreats;
 	private long lastMaj = System.nanoTime();
 	
@@ -203,6 +204,18 @@ public class Player {
 	
 	public int getTreats() {
 		return nbtreats;
+	}
+	
+	public boolean hasLid() {
+		return hasLid;
+	}
+	
+	public void holdLid() {
+		hasLid = true;
+	}
+	
+	public void takeLid() {
+		hasLid = false;
 	}
 	
 	public int takeTreats() {

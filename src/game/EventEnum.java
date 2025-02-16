@@ -13,5 +13,7 @@ public enum EventEnum {
 	MIRROR,
 	ARMOIR,
 	TREAT,
-	TREATBOWL;
+	TREATBOWL,
+	TRASH,
+	TRASHLID;
 }

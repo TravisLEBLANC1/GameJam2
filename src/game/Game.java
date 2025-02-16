@@ -12,8 +12,10 @@ import game.map.Wall;
 import game.objects.Button;
 import game.objects.ObjectFire;
 import game.objects.ObjectInteract;
+import game.objects.ObjectLid;
 import game.objects.ObjectMirror;
 import game.objects.ObjectMusic;
+import game.objects.ObjectTrash;
 import game.objects.ObjectTreat;
 import game.objects.ObjectTreatBowl;
 import game.objects.ObjectUnlock;
@@ -51,6 +53,10 @@ public class Game {
     	map.addButton(butFinal);
     	npc.addTarget(pos, butFinal);
     	
+    	pos = new Vector(2800, 700);
+    	var lid = new ObjectLid(pos, player);
+    	map.addButton(lid);
+    	
     	// buttons objects
     	pos = new Vector(2400, 500);
     	but1 = new ObjectInteract(EventEnum.FISH, pos, "Fish_Tank.png");
@@ -79,6 +85,11 @@ public class Game {
     	pos = new Vector(1500, 700);
     	var unlockMirror = new ObjectUnlock(butMiror);
     	npc.addTarget(pos, unlockMirror);
+    	
+    	pos = new Vector(1300, 500);
+    	var bin = new ObjectTrash(pos, player);
+    	map.addButton(bin);
+    	npc.addTarget(pos, bin);
     	
     	
     	pos = new Vector(1110, 700);
