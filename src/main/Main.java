@@ -26,7 +26,7 @@ public class Main {
 		}
 		if (game != null) {
 			if (game.isWon()) {
-				nbMap = 1; // (nbMap + 1) %4;
+				nbMap = 0; // (nbMap + 1) %4;
 			}
 			game.stop();
 		}
