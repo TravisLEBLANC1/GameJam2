@@ -86,13 +86,16 @@ public class Game {
     	var unlockMirror = new ObjectUnlock(butMiror);
     	npc.addTarget(pos, unlockMirror);
     	
-    	pos = new Vector(1300, 500);
+    	pos = new Vector(1480, 500);
     	var bin = new ObjectTrash(pos, player);
     	map.addButton(bin);
     	npc.addTarget(pos, bin);
     	
+		pos = new Vector(1000, 650);
+		var table = new ObjectInteract(EventEnum.NOEV, pos, "Table.png");
+		map.addButton(table);
     	
-    	pos = new Vector(1110, 700);
+    	pos = new Vector(1140, 630);
     	but1 = new ObjectInteract(EventEnum.TASSE, pos, "Mug.png");
     	map.addButton(but1);
     	npc.addTarget(pos, but1);
@@ -112,7 +115,11 @@ public class Game {
     	npc.addTarget(new Vector(100, 200), 1.0, ObjectInteract.empty());	
 
     	
-    	List<Vector> treats = List.of(new Vector(200, 170), new Vector(1000, 400), new Vector(1500, 600));
+    	pos = new Vector(200, 170);
+    	lid = new ObjectLid(pos, player);
+    	map.addButton(lid);
+    	
+    	List<Vector> treats = List.of(new Vector(1000, 400), new Vector(1500, 600));
     	
     	for (var v: treats) {
     		map.addButton(new ObjectTreat(v, player));
@@ -126,6 +133,19 @@ public class Game {
 		map.addButton(tunnel1);
 		map.addButton(tunnel2);
     	
+		
+		
+		pos = new Vector(1030, 75);
+		var door = new ObjectInteract(EventEnum.NOEV, pos, "Door.png");
+		map.addButton(door);
+		
+		pos = new Vector(2900, 100);
+		var tree = new ObjectInteract(EventEnum.NOEV, pos, "Cat_Tree.png");
+		map.addButton(tree);
+		
+		pos = new Vector(800, 350);
+		tree = new ObjectInteract(EventEnum.NOEV, pos, "Cat_Tree.png");
+		map.addButton(tree);
 
     	// timer objets
     	

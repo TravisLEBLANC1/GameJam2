@@ -35,9 +35,9 @@ public class Map {
 		walls.add(new Wall(new Rectangle(900,200, 40, 400)));
 		walls.add(new Wall(new Rectangle(2200,200, 40, 400)));
 		
-		
-		walls.add(new Wall(new Rectangle(2800,50, 30,100)));
-		walls.add(new Wall(new Rectangle(2900,50, 30 ,100)));
+//		
+//		walls.add(new Wall(new Rectangle(2800,50, 30,100)));
+//		walls.add(new Wall(new Rectangle(2900,50, 30 ,100)));
 		
 	}
 	
