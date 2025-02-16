@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 
 import game.EventEnum;
 import game.NPC;
+import game.Player;
 import util.Vector;
 
 public interface Button {

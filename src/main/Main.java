@@ -27,12 +27,15 @@ public class Main {
 		}
 		game = new Game();
 		graphic = new MainGraphic();
+
+
 		graphic.init(game);
 		var input = new KeyInput(game);
 		graphic.inputUser(input);
-		game.start();
 		updates = new Thread(graphic);
 		updates.start();
+		graphic.setVisible(true);
+		
 	}
 	
 	public static void main(String[] args) {

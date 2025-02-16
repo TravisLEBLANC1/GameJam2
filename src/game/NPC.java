@@ -13,6 +13,7 @@ public class NPC {
 	private final double hitboxShift = 12;
     
     public static final int WIDTH = 50;
+    public static final int HEIGHT = 50;
     
 	// npc variables
     private Vector pos = new Vector(100, 600);
@@ -32,6 +33,11 @@ public class NPC {
 	
 	public NPC(Game game) {
 		this.game = game;
+	}
+	
+	public void resetSpeed() {
+		speed = new Vector(0, 0);
+		lastMaj = System.nanoTime();
 	}
 	
 	public void addTarget(Vector v, double s, Button event) {
@@ -78,7 +84,14 @@ public class NPC {
             if (last.getType() != EventEnum.NOEV) {
             	game.event(last);
             }
-        }        
+        }
+        if (targets.size() == 0) {
+        	game.win();
+        }
+	}
+	
+	public void stop() {
+		isMoving = false;
 	}
 	
 	public void skip() {

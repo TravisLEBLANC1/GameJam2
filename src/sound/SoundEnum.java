@@ -9,7 +9,8 @@ public enum SoundEnum {
 	FIRE("sound/fire.wav"),
 	LOFI1("sound/lofi1.wav"),
 	LOFI2("sound/lofi2.wav"),
-	HIPHOP("sound/hiphop.wav");
+	HIPHOP("sound/hiphop.wav"),
+	PRRR("sound/prrrr.wav");
 	
 	
 	public final String path;

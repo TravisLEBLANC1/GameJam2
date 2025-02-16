@@ -32,8 +32,8 @@ public class SpriteContainer {
 	private static SpriteSheet current;
 	private static SpriteSheet currentBonk;
 	private static SpriteSheet currentDash;
+	private static SpriteSheet catright;
 	public static BufferedImage fire;
-	
 	private static boolean backward = true;
 	private static boolean isBonk = false;
 	private static boolean isDash = false;
@@ -72,7 +72,7 @@ public class SpriteContainer {
 	    return dimg;
 	}  
 	
-	private static BufferedImage scale(BufferedImage img, int dx, int dy) {
+	public static BufferedImage scale(BufferedImage img, int dx, int dy) {
 		int w = img.getWidth()*dx;
 		int h = img.getHeight()*dy;
 		BufferedImage after = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
@@ -139,6 +139,12 @@ public class SpriteContainer {
 			windowsheet.next();
 		}
 		
+		sheet =ImageIO.read(new File("animations/Cat_Walk_Right-Sheet.png"));
+		catright = build(sheet,30, 33, 12);
+		catright.scaleAll(2,2);
+		catright.loop();
+		
+		
 		loadImages("images");
 		current = up;
 		updateTimer.start();
@@ -172,6 +178,7 @@ public class SpriteContainer {
 	}
 	
 	private static void nextFrame() {
+		catright.next();
 		if (isBonk) {
 			return;
 		}
@@ -261,7 +268,6 @@ public class SpriteContainer {
 		case Direction.WEST, Direction.NORTHWEST, Direction.SOUTHWEST -> changeCurrent(left);
 		case Direction.SOUTH  -> changeCurrent(down);
 		}
-
 	}
 	
 	public static BufferedImage getImage() {
@@ -269,6 +275,10 @@ public class SpriteContainer {
 		if ((isBonk )&& currentBonk != null) return currentBonk.getSprite();
 		if ((isDash )&& currentDash != null) return currentDash.getSprite();
 		return current.getSprite();
+	}
+	
+	public static BufferedImage getImageNPC() {
+		return catright.getSprite();
 	}
 	
 	public static BufferedImage getImage(String name) {

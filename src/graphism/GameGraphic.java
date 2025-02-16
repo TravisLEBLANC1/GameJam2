@@ -6,7 +6,6 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -27,15 +26,16 @@ public class GameGraphic extends JPanel {
 	public static final Color PLAYERCOLOR = new Color(213, 246, 251);
 	public static final Color WALLCOLOR = new Color(250, 155, 165);
 	public static final Color INTERACTCOLOR = new Color(233, 201, 170);
-	private static EventEnum eventLoose;
-	private static boolean gameOver = false;
+	private static EventEnum eventLoose = EventEnum.NOEV;
+	private static int state; // 0 -> init screen   1 -> game screen   2 -> win screen   3 -> loose screen
 	private Game game;
 
 	private Vector upperLeft;
 	
 	public GameGraphic(Game game) {
 		setBackground(PLAYERCOLOR);
-		gameOver = false;
+		state = 0;
+		
 		this.game = game;
 	}
 	
@@ -44,10 +44,26 @@ public class GameGraphic extends JPanel {
 	}
 	  public static void looserScreen(EventEnum event) {
 		  eventLoose = event;
-		  gameOver = true;
+		  state = 3;
 	  }
 	  
-    private void addGameOverOverlay(Graphics g) {
+	  public static void winnerScreen() {
+		  state = 2;
+	  }
+	  
+	  public static void gameScreen() {
+		  state = 1;
+	  }
+	  
+	  private void addGameOverlayTouches(Graphics g) {
+		 g.setColor(INTERACTCOLOR);
+		 g.drawString("ZQSD to move", 700, 450);
+		 g.drawString("E to interact", 700, 500);
+		 g.drawString("Space to dash", 700, 550);
+		 g.drawString("Shift to teleport", 700, 600);
+	  }
+	  
+    private void addGameOverOverlay(Graphics g, String message) {
         Graphics2D g2d = (Graphics2D) g;
         
         // Draw black transparent overlay
@@ -58,7 +74,6 @@ public class GameGraphic extends JPanel {
         g2d.setColor(Color.WHITE);
         g2d.setFont(new Font("Arial", Font.BOLD, 30));
         FontMetrics metrics = g2d.getFontMetrics();
-        var message = "lost by : " + eventLoose.toString();
         int x = (getWidth() - metrics.stringWidth(message)) / 2;
         int y = getHeight() / 3;
         g2d.drawString(message, x, y);
@@ -99,14 +114,15 @@ public class GameGraphic extends JPanel {
 	    	  g.setColor(PLAYERCOLOR);
 	    	  
 	    	  g.fillArc((int)(v.x()-upperLeft.x()), (int) (v.y()-upperLeft.y()), 20, 20, 0, 360);
-	    	  
 	      }
 	    	
 	      if (b.getImg() != null && SpriteContainer.getImage(b.getImg()) != null) {
 	    	  var img = SpriteContainer.getImage(b.getImg());
 	    	  g.drawImage(img, (int)(button.x + button.width/4 -upperLeft.x()), (int)(button.y + button.height/4-upperLeft.y()), null);
 	      }else {
-	    	  g.fillRect((int)(button.x-upperLeft.x()), (int)(button.y-upperLeft.y()), button.width, button.height);
+	    	  g.setColor(Color.RED);
+	    	  g.drawString(b.getType().toString(), (int)(button.x-upperLeft.x()), (int)(button.y-upperLeft.y()));
+	    	  // g.fillRect((int)(button.x-upperLeft.x()), (int)(button.y-upperLeft.y()), button.width, button.height);
 	      }
 	    }
 	}
@@ -151,7 +167,12 @@ public class GameGraphic extends JPanel {
 		Graphics2D g2d = (Graphics2D) g;  // Cast to Graphics2
 		g.setColor(Color.YELLOW);
 		var pos = game.npc.getPos();
-		g.fillOval((int)( pos.x()- NPC.WIDTH/2 -upperLeft.x()),(int) (pos.y()-NPC.WIDTH/2-upperLeft.y()), NPC.WIDTH, NPC.WIDTH);
+		var img = SpriteContainer.getImageNPC();
+		if (img != null) {
+			g.drawImage(img, (int) (pos.x() -upperLeft.x() - NPC.WIDTH/2 -xshiftImage ), (int) (pos.y() -upperLeft.y()-NPC.HEIGHT/2 -yshiftImage), null);
+		}else {
+			g.fillOval((int)( pos.x()- NPC.WIDTH/2 -upperLeft.x()),(int) (pos.y()-NPC.WIDTH/2-upperLeft.y()), NPC.WIDTH, NPC.WIDTH);
+		}
 		g.setColor(Color.MAGENTA);
 		for (var target : game.npc.getTargets()){
 			
@@ -167,9 +188,31 @@ public class GameGraphic extends JPanel {
 		g.fillRect((int)(r.x  -upperLeft.x()),(int)(r.y - upperLeft.y()), r.width, r.height);
 	}
 	
+	private void paintFireLevel(Graphics g) {
+		g.setColor(WALLCOLOR);
+		g.fillRect(0, 0, (int) (MainGraphic.WINWIDTH*game.getFireLevel()), 20);
+	}
+	
+	private String messageFromEvent(EventEnum e) {
+		if (e == EventEnum.FIRE) {
+			return "the house burned...";
+		}
+		return "the cat got distracted by" +  switch(e) {
+		case FISH -> " a fish";
+		case WOOL -> " a Wool";
+		case MOUSE -> " a Mouse";
+		case TASSE -> " a Mug";
+		case WINDOW -> " the curtains";
+		default -> "";
+		};
+	}
+	
+
+	
     @Override
     protected void paintComponent(Graphics g) {
        super.paintComponent(g);
+       g.setFont(new Font("TimesRoman", Font.PLAIN, 15)); 
        calculateUpperLeft();
        paintBackGround(g);
        paintWalls(g);
@@ -177,8 +220,11 @@ public class GameGraphic extends JPanel {
        painFire(g);
        paintNPC(g);
        paintPlayer(g);
-       if (gameOver) {
-    	   addGameOverOverlay(g);
+       paintFireLevel(g);
+       switch(state) {
+       case 3 -> addGameOverOverlay(g, messageFromEvent(eventLoose));
+       case 2 -> addGameOverOverlay(g, "you win! Bon appetit!");
+       case 0 -> addGameOverlayTouches(g);
        }
     }
 }

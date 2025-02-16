@@ -39,7 +39,8 @@ public class ObjectMirror implements Button  {
 	
 	@Override
 	public boolean addTarget(NPC npc) {
-		npc.addTarget(target, 1.0, ObjectInteract.empty());
+		if (state == 1)
+			npc.addTarget(target, 0.5, ObjectInteract.empty());
 		return true;
 	}
 

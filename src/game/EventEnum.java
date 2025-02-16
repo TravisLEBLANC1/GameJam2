@@ -10,5 +10,6 @@ public enum EventEnum {
 	TASSE,
 	FIRE,
 	WINDOW,
-	MIRROR;
+	MIRROR,
+	ARMOIR;
 }

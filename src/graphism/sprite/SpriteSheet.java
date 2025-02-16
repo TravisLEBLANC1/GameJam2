@@ -6,18 +6,32 @@ import java.util.List;
 
 public class SpriteSheet {
 
-    private final List<BufferedImage> sprites;
+    private List<BufferedImage> sprites;
     private int current = 0;
+    private boolean islooping = false;
     public SpriteSheet(List<BufferedImage> sprites) {
         this.sprites = new ArrayList<>(sprites);
     }
     
+    public void loop() {
+    	islooping = true;
+    }
+    
+    public void scaleAll(int dx, int dy) {
+    	sprites = sprites.stream().map(b -> SpriteContainer.scale(b, dx, dy)).toList();
+    }
+    
     public void next() {
-    	if (0 <= current && current < sprites.size() - 1) {
-    		current++;
+    	if (islooping) {
+    		current = (current +1) % sprites.size();
     	}else {
-    		current = sprites.size() - 1;
+	    	if (0 <= current && current < sprites.size() - 1) {
+	    		current++;	
+	    	}else {
+	    		current = sprites.size() - 1;
+			}
     	}
+    
     }
     public void back() {
     	if (current > 0) {

@@ -18,7 +18,11 @@ public class ObjectWindow implements Button {
 		this.r = new Rectangle((int)pos.x() - Button.WIDTH/2, (int) pos.y() - Button.HEIGHT/2, Button.WIDTH, Button.HEIGHT*2);
 		this.maxstate = maxstate;
 		this.img = img;
-		state = 0;
+		if (maxstate == 1) {
+			state = 2;
+		}else {
+			state = 0;
+		}
 	}
 	
 	@Override
@@ -28,6 +32,7 @@ public class ObjectWindow implements Button {
 
 	@Override
 	public void interact() {
+		if (maxstate == 1) return;
 		if (reversed) {
 			state = (state - 1)%maxstate;
 			if (state == 0) reversed = false;

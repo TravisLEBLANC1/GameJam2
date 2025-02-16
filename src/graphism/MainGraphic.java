@@ -36,7 +36,7 @@ public class MainGraphic extends JFrame implements Runnable{
 	    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);  // Close when "X" is clicked
 	    setResizable(false);
 	    setSize(WINWIDTH, WINHEIGHT);  // Set window size
-	    setVisible(true);
+	    setVisible(false);
 	  }
 	  
 	  public void init(Game game) {

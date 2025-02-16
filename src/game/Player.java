@@ -33,7 +33,7 @@ public class Player {
 	private Direction lastDir = Direction.NULL;
 	private Direction dashDir = Direction.NULL;
 	private  Vector translocatorPos = null;
-	private  Vector pos = new Vector(550,500);
+	private  Vector pos = new Vector(200,500);
 	private Vector speed = Vector.NULL;
 	private double maxSpeed = 8;
 	private double dashSpeed = maxSpeed *dashSpeedMultiplicator;
@@ -46,6 +46,7 @@ public class Player {
 	
 	public void resetSpeed() {
 		speed = new Vector(0, 0);
+		lastMaj = System.nanoTime();
 	}
 	
 	public boolean isDashing() {
