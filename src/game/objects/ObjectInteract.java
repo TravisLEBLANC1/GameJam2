@@ -89,6 +89,9 @@ public class ObjectInteract implements Button{
 
 	@Override
 	public String getImg() {
+		if (type == EventEnum.FISH) {
+			return "Fish"+state;
+		}
 		return img;
 	}
 

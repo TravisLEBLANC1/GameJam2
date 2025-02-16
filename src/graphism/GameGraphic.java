@@ -48,7 +48,7 @@ public class GameGraphic extends JPanel {
 	  }
 	  
 	  public static void winnerScreen() {
-		  state = 2;
+		  if (state == 1) state = 2;
 	  }
 	  
 	  public static void gameScreen() {
@@ -120,11 +120,13 @@ public class GameGraphic extends JPanel {
 	    	  var img = SpriteContainer.getImage(b.getImg());
 	    	  g.drawImage(img, (int)(button.x + button.width/4 -upperLeft.x()), (int)(button.y + button.height/4-upperLeft.y()), null);
 	      }else {
-	    	  g.setColor(Color.RED);
+	    	  g.setColor(WALLCOLOR);
 	    	  g.drawString(b.getType().toString(), (int)(button.x-upperLeft.x()), (int)(button.y-upperLeft.y()));
-	    	  // g.fillRect((int)(button.x-upperLeft.x()), (int)(button.y-upperLeft.y()), button.width, button.height);
 	      }
+//		    var r = b.getRect();
+//			   g.drawRect((int) (r.x-upperLeft.x()), (int)(r.y-upperLeft.y()), r.width, r.height);
 	    }
+
 	}
 	
 	public void painFire(Graphics g) {
@@ -176,7 +178,7 @@ public class GameGraphic extends JPanel {
 		g.setColor(Color.MAGENTA);
 		for (var target : game.npc.getTargets()){
 			
-			g.fillOval((int)( target.x()- 4 -upperLeft.x()),(int) (target.y()-4-upperLeft.y()), 8, 8);
+			//g.fillOval((int)( target.x()- 4 -upperLeft.x()),(int) (target.y()-4-upperLeft.y()), 8, 8);
 		}
 	}
 	
@@ -193,9 +195,19 @@ public class GameGraphic extends JPanel {
 		g.fillRect(0, 0, (int) (MainGraphic.WINWIDTH*game.getFireLevel()), 20);
 	}
 	
+	private void paintTreatLevel(Graphics g) {
+		int nb = game.player.getTreats();
+		g.setColor(WALLCOLOR);
+		g.drawString(nb + "", 975, 30);
+		g.drawImage(SpriteContainer.getImage("Treat.png"), 1000, 10, null);
+	}
+	
 	private String messageFromEvent(EventEnum e) {
 		if (e == EventEnum.FIRE) {
 			return "the house burned...";
+		}
+		if (e == EventEnum.TREATBOWL) {
+			return "oh no... there is no treats in the bowl, you monster!";
 		}
 		return "the cat got distracted by" +  switch(e) {
 		case FISH -> " a fish";
@@ -221,6 +233,7 @@ public class GameGraphic extends JPanel {
        paintNPC(g);
        paintPlayer(g);
        paintFireLevel(g);
+       paintTreatLevel(g);
        switch(state) {
        case 3 -> addGameOverOverlay(g, messageFromEvent(eventLoose));
        case 2 -> addGameOverOverlay(g, "you win! Bon appetit!");

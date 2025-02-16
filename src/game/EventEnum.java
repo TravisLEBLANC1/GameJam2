@@ -11,5 +11,7 @@ public enum EventEnum {
 	FIRE,
 	WINDOW,
 	MIRROR,
-	ARMOIR;
+	ARMOIR,
+	TREAT,
+	TREATBOWL;
 }

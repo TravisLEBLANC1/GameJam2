@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import game.Game;
-import game.NPC;
 import game.Player;
 import game.objects.Button;
+import util.Vector;
 
 
 public class Map {
@@ -39,13 +39,11 @@ public class Map {
 		walls.add(new Wall(new Rectangle(2800,50, 30,100)));
 		walls.add(new Wall(new Rectangle(2900,50, 30 ,100)));
 		
-		var tunnel1 = new SecretTunnel(new Rectangle(300, 100, 200, 200), game.player);
-		var tunnel2 = new SecretTunnel(new Rectangle(2500, 100, 200, 200), game.player);
-		tunnel1.setSibling(tunnel2);
-		tunnel2.setSibling(tunnel1);
-		buttons.add(tunnel1);
-		buttons.add(tunnel2);
-		
+	}
+	
+	public Vector objectif() {
+		var r = buttons.getFirst().getRect();
+		return new Vector(r.x, r.y);
 	}
 	
 	public void addButton(Button but) {
@@ -63,7 +61,7 @@ public class Map {
 	public boolean event(Button event) {
 		return switch(event.getType()) {
 		case NOEV -> true;
-		case FISH,WOOL,MOUSE, WINDOW -> basicCheck(event);
+		case FISH,WOOL,MOUSE, WINDOW,TREATBOWL  -> basicCheck(event);
 		case UNLOCK -> event.unlockNext();
 		case MIRROR -> event.addTarget(game.npc);
 		case TASSE -> basicCheck(event);
@@ -72,7 +70,6 @@ public class Map {
 			yield false;
 			}
 		};
-		
 	}
 	
 	public Wall touchWall(Player player) {

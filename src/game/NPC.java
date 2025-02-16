@@ -80,11 +80,13 @@ public class NPC {
             System.out.println("NPC reach target : " + targetPos);
             targets.removeLast();
             currentSpeed = speeds.removeLast();
+            System.out.println(targets.size());
             var last = events.removeLast();
             if (last.getType() != EventEnum.NOEV) {
             	game.event(last);
             }
         }
+        
         if (targets.size() == 0) {
         	game.win();
         }

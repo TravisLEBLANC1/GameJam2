@@ -9,6 +9,7 @@ import util.Vector;
 public class ObjectWindow implements Button {
 	private Rectangle r;
 	private int state;
+	private boolean isBurning = false;
 	private int maxstate;
 	private String img;
 	private int nbChecked = 0;
@@ -23,6 +24,14 @@ public class ObjectWindow implements Button {
 		}else {
 			state = 0;
 		}
+	}
+	
+	public void burn() {
+		isBurning = true;
+	}
+	
+	public void cooldown() {
+		isBurning = false;
 	}
 	
 	@Override
@@ -66,6 +75,7 @@ public class ObjectWindow implements Button {
 
 	@Override
 	public String getImg() {
+		if (isBurning) return "Fire.png";
 		return img + state;
 	}
 

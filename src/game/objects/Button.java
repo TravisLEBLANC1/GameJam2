@@ -9,6 +9,7 @@ import game.Player;
 import util.Vector;
 
 public interface Button {
+	public static final Rectangle OUT = new Rectangle(-10000,-10000, 0, 0);
 	public static final int WIDTH = 100;
 	public static final int HEIGHT = 100;
 	public EventEnum getType();

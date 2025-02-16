@@ -41,7 +41,7 @@ public class Player {
 	private long transloBeginTime = 0;
 	private long stunedBeginTime = 0;
 	private boolean isStuned = false;
-
+	private int nbtreats;
 	private long lastMaj = System.nanoTime();
 	
 	public void resetSpeed() {
@@ -195,6 +195,20 @@ public class Player {
 		}else {
 			return dir;
 		}
+	}
+	
+	public void addTreat(int nb) {
+		nbtreats += nb;
+	}
+	
+	public int getTreats() {
+		return nbtreats;
+	}
+	
+	public int takeTreats() {
+		var tmp = nbtreats;
+		nbtreats = 0;
+		return tmp;
 	}
 	
 	

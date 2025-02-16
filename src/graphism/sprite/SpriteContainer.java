@@ -103,6 +103,15 @@ public class SpriteContainer {
             }
         }
     }
+    
+    public static void loadAsImage(String name, String shortname, int width, int heigth, int nb) throws IOException {
+		var sheet = ImageIO.read(new File(name));
+		var windowsheet = build(sheet, width, heigth, nb);
+		for (int i =0; i < 5; i++) {
+			images.put(shortname + i, scale(windowsheet.getSprite(), 2, 2));
+			windowsheet.next();
+		}
+    }
 	
 	public static void init() throws IOException {
 		BufferedImage sheet = ImageIO.read(new File("animations/Walk_Down-Sheet.png"));
@@ -132,24 +141,18 @@ public class SpriteContainer {
 		sheet = ImageIO.read(new File("animations/Dash_Left-Sheet.png"));
 		dashleft = build(sheet, 3);
 		
-		sheet =ImageIO.read(new File("animations/Window-Sheet.png"));
-		var windowsheet = build(sheet, 49, 70 ,5);
-		for (int i =0; i < 5; i++) {
-			images.put("window" + i, scale(windowsheet.getSprite(),2 , 2));
-			windowsheet.next();
-		}
-		
 		sheet =ImageIO.read(new File("animations/Cat_Walk_Right-Sheet.png"));
 		catright = build(sheet,30, 33, 12);
 		catright.scaleAll(2,2);
 		catright.loop();
 		
-		sheet =ImageIO.read(new File("animations/Closet-Sheet.png"));
-		var closetSheet = build(sheet, 49, 70, 2);
-		images.put("closet"+0, scale(closetSheet.getSprite(),2 , 2));
-		closetSheet.next();
-		images.put("closet"+1, scale(closetSheet.getSprite(),2 , 2));
+		loadAsImage("animations/Window-Sheet.png", "window", 49, 70, 5);
+		loadAsImage("animations/Closet-Sheet.png", "closet", 49, 70, 2);
+		loadAsImage("animations/Fish_Tank-Sheet.png", "Fish", 47, 32, 2);
+		loadAsImage("animations/Bin-Sheet.png", "Bin", 19, 20, 2);
+		loadAsImage("animations/Bowl-Sheet.png", "Bowl", 32, 17, 2);
 		
+
 		
 		loadImages("images");
 		current = up;
