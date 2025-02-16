@@ -2,9 +2,11 @@ package game;
 
 public enum EventEnum {
 	NOEV,
+	MUSIC,
 	FISH,
+	WOOL,
 	MOUSE,
-	UNLOCKTASSE,
+	UNLOCK,
 	TASSE,
 	FIRE;
 }

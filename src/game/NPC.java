@@ -4,6 +4,8 @@ import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.List;
 
+import game.objects.Button;
+import game.objects.ObjectInteract;
 import util.Vector;
 
 public class NPC {
@@ -23,14 +25,14 @@ public class NPC {
 	
 	private long startTime = System.nanoTime();
 	private ArrayList<Vector> targets = new ArrayList<>();
-	private ArrayList<ObjectInteract> events = new ArrayList<>();
+	private ArrayList<Button> events = new ArrayList<>();
 	private Game game;
 	
 	public NPC(Game game) {
 		this.game = game;
 	}
 	
-	public void addTarget(Vector v, ObjectInteract event) {
+	public void addTarget(Vector v, Button event) {
 		targets.add(v);
 		events.add(event);
 	}
@@ -60,7 +62,7 @@ public class NPC {
         if (distance < maxSpeed) {
             System.out.println("NPC reach target : " + targetPos);
             targets.removeLast();
-            if (events.getLast().type != EventEnum.NOEV) {
+            if (events.getLast().getType() != EventEnum.NOEV) {
             	game.event(events.getLast());
             }
             events.removeLast();

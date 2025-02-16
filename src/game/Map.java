@@ -5,6 +5,8 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.List;
 
+import game.objects.Button;
+import game.objects.ObjectInteract;
 import util.Vector;
 
 
@@ -43,7 +45,7 @@ public class Map {
 		buttons.add(but);
 	}
 	
-	private boolean basicCheck(ObjectInteract event) {
+	private boolean basicCheck(Button event) {
 		return event.isValid();
 	}
 	
@@ -56,23 +58,18 @@ public class Map {
 	 * return true if the event is validated
 	 * false otherwise (and we loose?)
 	 */
-	public boolean event(ObjectInteract event) {
-		return switch(event.type) {
+	public boolean event(Button event) {
+		return switch(event.getType()) {
 		case NOEV -> true;
-		case FISH -> basicCheck(event);
-		case MOUSE -> basicCheck(event);
-		case UNLOCKTASSE -> unlockNext(event);
+		case FISH,WOOL,MOUSE -> basicCheck(event);
+		case UNLOCK -> event.unlockNext();
 		case TASSE -> basicCheck(event);
 		default -> {
-			System.out.println("event " + event + " inconnu");
+			System.out.println("event " + event.getType() + " inconnu");
 			yield false;
 			}
 		};
 		
-	}
-	
-	public List<Wall> getWalls(){
-		return walls;
 	}
 	
 	public Wall touchWall(Player player) {
@@ -85,8 +82,16 @@ public class Map {
 		return null;
 	}
 	
+	public List<Wall> getWalls(){
+		return walls;
+	}
+	
 	public List<Button> getButtons(){
 		return buttons;
+	}
+	
+	public Rectangle getBorder() {
+		return new Rectangle(50,50, 3000,720);
 	}
 	
 	private void clickButton(Button button, Polygon hitbox) {

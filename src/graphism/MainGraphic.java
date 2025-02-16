@@ -20,7 +20,7 @@ import graphism.sprite.SpriteContainer;
 
 public class MainGraphic extends JFrame implements Runnable{
 	public static final String APPNAME = "SPEED_GHOST"; 
-	public static final Color BACKGROUNDCOLOR = Color.white;
+	public static final Color BACKGROUNDCOLOR = GameGraphic.PLAYERCOLOR;
 	public static final int FPS = 60;
 	private Timer updateTimer = new Timer(1000/FPS, e -> draw());
 	private GameGraphic gameGraphic;
@@ -83,7 +83,7 @@ public class MainGraphic extends JFrame implements Runnable{
                 try {
                     Thread.sleep(sleepTime);
                 } catch (InterruptedException e) {
-                    e.printStackTrace();
+                    break;
                 }
             }
         }

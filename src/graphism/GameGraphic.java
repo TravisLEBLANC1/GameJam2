@@ -6,6 +6,7 @@ import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -23,7 +24,9 @@ import util.Vector;
 public class GameGraphic extends JPanel {
 	private static final int xshiftImage = 13;
 	private static final int yshiftImage = 15;
-	private static final Color playerColor = new Color(213, 246, 251, 200);
+	public static final Color PLAYERCOLOR = new Color(213, 246, 251);
+	public static final Color WALLCOLOR = new Color(250, 155, 165);
+	public static final Color INTERACTCOLOR = new Color(233, 201, 170);
 	private static EventEnum eventLoose;
 	private static boolean gameOver = false;
 	private Game game;
@@ -31,6 +34,7 @@ public class GameGraphic extends JPanel {
 	private Vector upperLeft;
 	
 	public GameGraphic(Game game) {
+		setBackground(PLAYERCOLOR);
 		gameOver = false;
 		this.game = game;
 	}
@@ -76,8 +80,9 @@ public class GameGraphic extends JPanel {
 	
 	public void paintWalls(Graphics g) {
 	    var walls = game.map.getWalls();
+	    g.setColor(INTERACTCOLOR);
 	    for (var wall : walls) {
-	      g.setColor(Color.GRAY);
+	      
 	      var tmp = wall.getPolygon();
 	      var poly = new Polygon(tmp.xpoints, tmp.ypoints, tmp.npoints);
 	      poly.translate((int) -upperLeft.x(), (int) -upperLeft.y());
@@ -94,7 +99,13 @@ public class GameGraphic extends JPanel {
 	      }else {
 	    	  g.setColor(Color.BLACK);
 	      }
-	      g.fillRect((int)(button.x-upperLeft.x()), (int)(button.y-upperLeft.y()), button.width, button.height);
+	      // g.fillRect((int)(button.x-upperLeft.x()), (int)(button.y-upperLeft.y()), button.width, button.height);
+	      if (b.getImg() != null && SpriteContainer.getImage(b.getImg()) != null) {
+	    	  var img = SpriteContainer.getImage(b.getImg());
+	    	  g.drawImage(img, (int)(button.x + button.width/4 -upperLeft.x()), (int)(button.y + button.height/4-upperLeft.y()), null);
+	      }else {
+	    	  g.fillRect((int)(button.x-upperLeft.x()), (int)(button.y-upperLeft.y()), button.width, button.height);
+	      }
 	    }
 	}
 	
@@ -121,7 +132,7 @@ public class GameGraphic extends JPanel {
 		}
 		
 		if (game.player.isTranslocator()) {
-			g.setColor(playerColor);
+			g.setColor(PLAYERCOLOR);
 			
 			var tPos = game.player.getTranslocatorPos();
 			var tTime = game.player.getTranslocatorTime();
@@ -139,19 +150,26 @@ public class GameGraphic extends JPanel {
 		g.setColor(Color.YELLOW);
 		var pos = game.npc.getPos();
 		g.fillOval((int)( pos.x()- NPC.WIDTH/2 -upperLeft.x()),(int) (pos.y()-NPC.WIDTH/2-upperLeft.y()), NPC.WIDTH, NPC.WIDTH);
+		g.setColor(Color.MAGENTA);
 		for (var target : game.npc.getTargets()){
-			g.setColor(Color.MAGENTA);
-			g.fillOval((int)( target.x()- 4 -upperLeft.x()),(int) (target.y()-4-upperLeft.y()), 8, 8);
+			
+			//g.fillOval((int)( target.x()- 4 -upperLeft.x()),(int) (target.y()-4-upperLeft.y()), 8, 8);
 		}
-//		g.setColor(Color.BLACK);
-//		var rec = game.npc.getHitbox();
-//		g2d.draw(rec);
+	}
+	
+	public void paintBackGround(Graphics g) {
+		var r=game.map.getBorder();
+//		g.setColor(playerColor);
+//		g.fillRect(0, 0,MainGraphic.WINWIDTH, MainGraphic.HEIGHT);
+		g.setColor(Color.WHITE);
+		g.fillRect((int)(r.x  -upperLeft.x()),(int)(r.y - upperLeft.y()), r.width, r.height);
 	}
 	
     @Override
     protected void paintComponent(Graphics g) {
        super.paintComponent(g);
        calculateUpperLeft();
+       paintBackGround(g);
        paintWalls(g);
        paintButtons(g);
        painFire(g);

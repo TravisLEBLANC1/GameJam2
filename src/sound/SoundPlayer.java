@@ -31,12 +31,9 @@ public class SoundPlayer implements LineListener {
 	}
 	
 	public static void init() throws IOException, UnsupportedAudioFileException, LineUnavailableException {
-		load(SoundEnum.DASH);
-		load( SoundEnum.BONK);
-		load(SoundEnum.TELEPORT);
-		load(SoundEnum.MIAOU1);
-		load(SoundEnum.MIAOU2);
-		load(SoundEnum.FIRE);
+		for (var v : SoundEnum.values()) {
+			load(v);
+		}
 		miaouTimer.start();
 	}
 	

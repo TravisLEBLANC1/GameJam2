@@ -1,16 +1,20 @@
 package graphism.sprite;
 
+import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 import javax.swing.Timer;
 
-import game.Player;
+import game.objects.ObjectInteract;
 import util.Direction;
 
 public class SpriteContainer {
+	private static HashMap<String, BufferedImage> images = new HashMap<>();
 	private static SpriteSheet down ;
 	private static SpriteSheet up ;
 	private static SpriteSheet left ;
@@ -45,36 +49,69 @@ public class SpriteContainer {
 		        build();
 	}
 	
+	public static BufferedImage resize(BufferedImage img, int newW, int newH) { 
+	    Image tmp = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+	    BufferedImage dimg = new BufferedImage(newW, newH, BufferedImage.TYPE_INT_ARGB);
+
+	    Graphics2D g2d = dimg.createGraphics();
+	    g2d.drawImage(tmp, 0, 0, null);
+	    g2d.dispose();
+
+	    return dimg;
+	}  
+	
+    public static void loadImages(String directoryPath) throws IOException {
+        HashMap<String, BufferedImage> imageMap = new HashMap<>();
+        File directory = new File(directoryPath);
+
+        if (!directory.exists() || !directory.isDirectory()) {
+            System.err.println("Invalid directory: " + directoryPath);
+            return;
+        }
+
+        File[] files = directory.listFiles((dir, name) -> name.toLowerCase().endsWith(".png") || name.toLowerCase().endsWith(".jpg") || name.toLowerCase().endsWith(".jpeg"));
+        if (files != null) {
+            for (File file : files) {
+                BufferedImage image = ImageIO.read(file);
+                if (image != null) {
+                	images.put(file.getName(), resize(image, ObjectInteract.WIDTH/2, ObjectInteract.HEIGHT/2));
+                } else {
+                    System.err.println("Failed to load image: " + file.getName());
+                }
+            }
+        }
+    }
+	
 	public static void init() throws IOException {
-		fire = ImageIO.read(new File("images/fire.png"));
-		
-		BufferedImage sheet = ImageIO.read(new File("images/Walk_Down-Sheet.png"));
+		BufferedImage sheet = ImageIO.read(new File("animations/Walk_Down-Sheet.png"));
 		down = build(sheet, 4);
-		sheet = ImageIO.read(new File("images/Walk_Up-Sheet.png"));
+		sheet = ImageIO.read(new File("animations/Walk_Up-Sheet.png"));
 		up = build(sheet, 4);
-		sheet = ImageIO.read(new File("images/Walk_Right-Sheet.png"));
+		sheet = ImageIO.read(new File("animations/Walk_Right-Sheet.png"));
 		right = build(sheet, 4);
-		sheet = ImageIO.read(new File("images/Walk_Left-Sheet.png"));
+		sheet = ImageIO.read(new File("animations/Walk_Left-Sheet.png"));
 		left = build(sheet, 4);
 		
-		sheet = ImageIO.read(new File("images/Bonk_Down-Sheet.png"));
+		sheet = ImageIO.read(new File("animations/Bonk_Down-Sheet.png"));
 		bonkdown = build(sheet, 4);
-		sheet = ImageIO.read(new File("images/Bonk_Up-Sheet.png"));
+		sheet = ImageIO.read(new File("animations/Bonk_Up-Sheet.png"));
 		bonkup = build(sheet, 4);
-		sheet = ImageIO.read(new File("images/Bonk_Right-Sheet.png"));
+		sheet = ImageIO.read(new File("animations/Bonk_Right-Sheet.png"));
 		bonkright = build(sheet, 4);
-		sheet = ImageIO.read(new File("images/Bonk_Left-Sheet.png"));
+		sheet = ImageIO.read(new File("animations/Bonk_Left-Sheet.png"));
 		bonkleft = build(sheet, 4);
 		
-		sheet = ImageIO.read(new File("images/Dash_Down-Sheet.png"));
+		sheet = ImageIO.read(new File("animations/Dash_Down-Sheet.png"));
 		dashdown = build(sheet, 3);
-		sheet = ImageIO.read(new File("images/Dash_Up-Sheet.png"));
+		sheet = ImageIO.read(new File("animations/Dash_Up-Sheet.png"));
 		dashup = build(sheet, 4);
-		sheet = ImageIO.read(new File("images/Dash_Right-Sheet.png"));
+		sheet = ImageIO.read(new File("animations/Dash_Right-Sheet.png"));
 		dashright = build(sheet, 3);
-		sheet = ImageIO.read(new File("images/Dash_Left-Sheet.png"));
+		sheet = ImageIO.read(new File("animations/Dash_Left-Sheet.png"));
 		dashleft = build(sheet, 3);
 		
+		
+		loadImages("images");
 		current = up;
 		updateTimer.start();
 		bonkUpdateTimer.start();
@@ -204,5 +241,12 @@ public class SpriteContainer {
 		if ((isBonk )&& currentBonk != null) return currentBonk.getSprite();
 		if ((isDash )&& currentDash != null) return currentDash.getSprite();
 		return current.getSprite();
+	}
+	
+	public static BufferedImage getImage(String name) {
+		if (images.containsKey(name)) {
+			return images.get(name);
+		}
+		return null;
 	}
 }

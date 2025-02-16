@@ -1,15 +1,17 @@
-package game;
+package game.objects;
 
 import java.awt.Polygon;
 import java.awt.Rectangle;
 
 import javax.swing.Timer;
 
+import game.EventEnum;
+import game.Game;
 import sound.SoundEnum;
 import sound.SoundPlayer;
+import util.Vector;
 
 public class ObjectFire implements Button {
-	private EventEnum type;
 	private Rectangle r;
 	private Game game;
 	private final int fireTime = 20000;
@@ -18,9 +20,8 @@ public class ObjectFire implements Button {
 	private long fireTimerStart ; // in ms
 	private Timer fireSoundTimer = new Timer(fireTime - fireDeltaTime, e -> SoundPlayer.play(SoundEnum.FIRE));
 	
-	public ObjectFire(EventEnum type, Rectangle hitbox, Game game) {
-		this.type = type;
-		this.r = hitbox;
+	public ObjectFire(Vector pos, Game game) {
+		this.r = new Rectangle((int)pos.x() - Button.WIDTH/2, (int) pos.y() - Button.HEIGHT/2, Button.WIDTH, Button.HEIGHT);
 		this.game = game;
 		fireTimer.start();
 		fireSoundTimer.start();
@@ -60,5 +61,15 @@ public class ObjectFire implements Button {
 	@Override
 	public boolean isValid() {
 		return System.currentTimeMillis() - fireTimerStart <=  fireDeltaTime;
+	}
+
+	@Override
+	public String getImg() {
+		return null;
+	}
+
+	@Override
+	public EventEnum getType() {
+		return EventEnum.FIRE;
 	}
 }

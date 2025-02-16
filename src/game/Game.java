@@ -6,6 +6,11 @@ import java.util.List;
 
 import javax.swing.Timer;
 
+import game.objects.Button;
+import game.objects.ObjectFire;
+import game.objects.ObjectInteract;
+import game.objects.ObjectMusic;
+import game.objects.ObjectUnlock;
 import graphism.Camera;
 import graphism.GameGraphic;
 import graphism.sprite.SpriteContainer;
@@ -23,29 +28,31 @@ public class Game {
 
     public NPC npc = new NPC(this);
 	public Camera cam = new Camera(player);
-    private boolean running = true;
     
     
     public void initNPC() {
     	// buttons objects
-    	
-    	var but1 = new ObjectInteract(EventEnum.FISH, new Rectangle (1900,450,50,50));
+    	var pos = new Vector(2000, 450);
+    	var but1 = new ObjectInteract(EventEnum.FISH, pos, "Fish_Tank.png");
     	map.addButton(but1);
-    	npc.addTarget(new Vector(2000, 450), but1);
+    	npc.addTarget(pos, but1);
     	
     	npc.addTarget(new Vector(1500, 700), ObjectInteract.empty());
     	
-    	but1 = new ObjectInteract(EventEnum.TASSE, new Rectangle (1090,700,50,50));
+    	pos = new Vector(1110, 700);
+    	but1 = new ObjectInteract(EventEnum.TASSE, pos, "Mug.png");
     	map.addButton(but1);
-    	npc.addTarget(new Vector(1110, 700), but1);
+    	npc.addTarget(pos, but1);
     	
-    	var but2 = new ObjectInteract(EventEnum.UNLOCKTASSE, new Rectangle (), but1, 2);
-    	npc.addTarget(new Vector(950, 700), but2);
+    	pos = new Vector(950, 700);
+    	var but2 = new ObjectUnlock(but1);
+    	npc.addTarget(pos, but2);
     	npc.addTarget(new Vector(400, 600), ObjectInteract.empty());
     	
-    	but1 = new ObjectInteract(EventEnum.FISH, new Rectangle (300,400,50,50));
+    	pos = new Vector(350, 450);
+    	but1 = new ObjectInteract(EventEnum.WOOL, pos, "Wool_Ball.png");
     	map.addButton(but1);
-    	npc.addTarget(new Vector(350, 450), but1);
+    	npc.addTarget(pos, but1);
     	
     	npc.addTarget(new Vector(100, 200), ObjectInteract.empty());
     	
@@ -53,9 +60,13 @@ public class Game {
     	
     	
     	// timer objets
-    	var but3 = new ObjectFire(EventEnum.FIRE, new Rectangle (600,100,50,50), this);
+    	var but3 = new ObjectFire(new Vector(650, 150), this);
     	timerObjects.add(but3);
     	map.addButton(but3);
+    	
+    	// music objects
+    	var but4 = new ObjectMusic(new Rectangle(50, 650, 100, 100));
+    	map.addButton(but4);
     }
     
 	public void start() {
@@ -141,9 +152,9 @@ public class Game {
 	
 	
 	
-	public void event(ObjectInteract event) {
+	public void event(Button event) {
 		if (!map.event(event)) {
-			loose(event.type);
+			loose(event.getType());
 		}else {
 			System.out.println("good!");
 		}
